@@ -115,7 +115,7 @@ export default function Nav({ openNav, onCloseNav }) {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              mt: '75px',
+              mt: '70px',
               width: "100%",
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
               top: isScrolled ? -125 : 0,
@@ -128,7 +128,7 @@ export default function Nav({ openNav, onCloseNav }) {
             flexDirection: 'row',
             justifyContent: 'center',
             p: 0,
-            width: "1200px",
+            width: "1180px",
             bgcolor: 'background.paper',
 
           }} />

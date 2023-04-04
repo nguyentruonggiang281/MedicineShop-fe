@@ -32,7 +32,7 @@ const PRODUCT_NAME = [
 const PRODUCT_COLOR = ['#00AB55', '#000000', '#FFFFFF', '#FFC0CB', '#FF4842', '#1890FF', '#94D82D', '#FFC107'];
 const PRODUCT_COVER = [
     // 'https://nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg',
-    'https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/338016962_1258667861697558_6626035614068597221_n.jpg?stp=dst-jpg_p180x540&_nc_cat=102&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=9Vs9ClKf5yMAX8IbZQ_&_nc_ht=scontent.fsgn2-8.fna&oh=00_AfB3GgJ5naCdARCi1Uslx7xXkLeGt3BaKUE5usHA5id0PQ&oe=6428C0EF',
+    'https://nhathuoclongchau.com.vn/images/product/2022/07/00500213-bcs-safefit-freezer-max-s52-3-cai-gel-mat-lanh-sang-khoai-6230-62c3_large.jpg',
     'https://nhathuoclongchau.com.vn/images/product/2022/05/00345910-xit-hong-xuyen-tam-lien-hai-thuong-vuong-30ml-5572-6272_large.jpg',
     'https://nhathuoclongchau.com.vn/images/product/2022/06/00030434-active-lung-400mg-new-nordic-2x15-5527-62af_large.jpg',
     'https://nhathuoclongchau.com.vn/images/product/2022/06/00028445-dao-cao-rau-gillette-super-thin-can-vang-goi-2-cai-1139-62b4_large.jpg',

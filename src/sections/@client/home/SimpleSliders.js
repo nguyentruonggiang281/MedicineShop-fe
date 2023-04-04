@@ -1,7 +1,5 @@
 import React from 'react';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { Button } from '@mui/material';
 
 const sliderStyle = {
@@ -20,6 +18,7 @@ const imgStyle = {
     height: "100%",
     objectFit: "cover"
 };
+
 const customArrowStyles = {
     position: "absolute",
     zIndex: 1,
@@ -43,14 +42,12 @@ const CustomPrevArrow = (props) => (
 
 function SimpleSlider() {
     const settings = {
-        dots: true,
         infinite: true,
         speed: 500,
         autoplay: true,
         autoplaySpeed: 3000, // thời gian trễ là 3000ms (3 giây)
         slidesToShow: 1,
         slidesToScroll: 1,
-        centerPadding: "0px",
         nextArrow: <CustomNextArrow />,
         prevArrow: <CustomPrevArrow />,
     };
