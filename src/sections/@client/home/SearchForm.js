@@ -1,11 +1,15 @@
 import React from 'react'
 import {
     Grid, Paper, Stack, Typography,
-    OutlinedInput, Button, Chip, ListItem
+
+    OutlinedInput, Button,
+
 } from '@mui/material'
 import { styled } from "@mui/material/styles";
 import Scrollbar from '../../../components/scrollbar';
 import Iconify from '../../../components/iconify';
+import ListChip from './ListChip';
+
 
 // ----------------------------------------------------------------------------------
 
@@ -18,7 +22,9 @@ const chipData = [
     { key: 5, label: 'Polymer', href: "/" },
     { key: 6, label: 'React', href: "/" },
     { key: 7, label: 'Vue.js', href: "/" },
-    { key: 8, label: 'React', href: "/" }];
+    { key: 8, label: 'React', href: "/" },
+    { key: 9, label: 'jQuery', href: "/" }];
+
 // ----------------------------------------------------------------------------------
 const SearchContainer = styled("div")({
     display: "flex",
@@ -64,11 +70,12 @@ function SearchForm() {
 
                         <SearchContainer>
                             <SearchInput variant="standard" placeholder="Nhập từ khóa..." />
-                            <SearchButton variant="contained">
-                                <Iconify icon="eva:search-fill" sx={{ width: 25, height: 25 }} />
+                            <SearchButton variant="contained" >
+                                <Iconify icon="eva:search-fill" sx={{width: 25, height: 25 }} />
                             </SearchButton>
                         </SearchContainer>
-                        <Stack>
+                        <Stack >
+
                             <Typography variant="subtitle1"> Tra Cứu Hàng Đầu</Typography>
                             <Scrollbar
                                 sx={{
@@ -76,16 +83,10 @@ function SearchForm() {
                                     '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'row' },
                                 }}
                             >
-                                {chipData.map((data) => {
-                                    return (
-                                        <ListItem key={data.key}>
-                                            <Chip
-                                                label={data.label}
-                                                component="a" href={data.href} clickable
-                                            />
-                                        </ListItem>
-                                    );
-                                })}
+                                <Stack direction={'row'} spacing={2.5} py={1}>
+                                <ListChip chipData={chipData}/>
+                                </Stack>
+
                             </Scrollbar>
 
                         </Stack>

@@ -16,11 +16,12 @@ import NotificationsPopover from './NotificationsPopover';
 
 const HEADER_MOBILE = 64;
 
-const HEADER_DESKTOP = 75 ;
+const HEADER_DESKTOP = 70;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.primary.main }),
   boxShadow: 'none',
+  
   [theme.breakpoints.up('lg')]: {
     width: "100%",
     display: 'flex',

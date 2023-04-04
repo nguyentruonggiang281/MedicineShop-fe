@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 //
 import Header from './header';
 import Nav from './nav';
-// import Footer from './footer';
+import Footer from './footer';
 import { ProductCartWidget } from '../../sections/@client/products';
 
 
@@ -13,7 +13,7 @@ import { ProductCartWidget } from '../../sections/@client/products';
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 40;
-const APP_BAR_DESKTOP = 99;
+const APP_BAR_DESKTOP = 94;
 
 const StyledRoot = styled('div')({
   display: 'flex',
@@ -49,9 +49,9 @@ export default function ClientLayout() {
       <ProductCartWidget />
       <Main>
         <Outlet />
+      <Footer/>
       </Main>
       
-      {/* <Footer/> */}
     </StyledRoot>
   );
 }

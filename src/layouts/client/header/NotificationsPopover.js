@@ -102,7 +102,7 @@ export default function NotificationsPopover() {
 
   return (
     <>
-      <IconButton color={open ?   'secondary' :'inherit'} onClick={handleOpen} sx={{ width: 40, height: 40, background : '#10101078' }}>
+      <IconButton color={open ?   'secondary' :'inherit'} onClick={handleOpen} sx={{ width: 40, height: 40, background : '#10101078' ,'&:hover': { bgcolor: '#101010a8' }}}>
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify icon="eva:bell-fill" />
         </Badge>
