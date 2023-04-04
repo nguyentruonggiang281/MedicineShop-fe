@@ -1,12 +1,15 @@
 import React from 'react'
 import {
     Grid, Paper, Stack, Typography,
+
     OutlinedInput, Button,
+
 } from '@mui/material'
 import { styled } from "@mui/material/styles";
 import Scrollbar from '../../../components/scrollbar';
 import Iconify from '../../../components/iconify';
 import ListChip from './ListChip';
+
 
 // ----------------------------------------------------------------------------------
 
@@ -21,6 +24,7 @@ const chipData = [
     { key: 7, label: 'Vue.js', href: "/" },
     { key: 8, label: 'React', href: "/" },
     { key: 9, label: 'jQuery', href: "/" }];
+
 // ----------------------------------------------------------------------------------
 const SearchContainer = styled("div")({
     display: "flex",
@@ -71,6 +75,7 @@ function SearchForm() {
                             </SearchButton>
                         </SearchContainer>
                         <Stack >
+
                             <Typography variant="subtitle1"> Tra Cứu Hàng Đầu</Typography>
                             <Scrollbar
                                 sx={{
@@ -81,6 +86,7 @@ function SearchForm() {
                                 <Stack direction={'row'} spacing={2.5} py={1}>
                                 <ListChip chipData={chipData}/>
                                 </Stack>
+
                             </Scrollbar>
 
                         </Stack>

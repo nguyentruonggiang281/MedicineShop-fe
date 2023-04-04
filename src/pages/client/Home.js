@@ -184,6 +184,7 @@ export default function Home() {
           </Stack>
 
           {/* Sản Phẩm Nổi Bật Hôm Nay */}
+
           {/* ------------------------------------------------------------------------------- */}
           <Stack sx={{ background: "#e0edfe", pt: 2, pb: 2, borderRadius: 2 }} >
             <Typography variant='h4' mb={2}>
@@ -201,10 +202,11 @@ export default function Home() {
 
 
           {/* Sản Phẩm Theo Đối Tượng */}
+
           {/* ------------------------------------------------------------------------------- */}
           <GlassCardComponent dataTitle={dataTitleFilter} title='BẢO VỆ' content='Sức khoẻ người thân' />
           <Stack>
-            <Stack
+ <Stack
               direction="row"
               justifyContent="space-between"
               alignItems="center"
@@ -239,11 +241,11 @@ export default function Home() {
           <GlassCardComponent dataTitle={dataTitleSuggestions} title='Kiểm tra sức khoẻ' content='Dựa trên đánh giá từ các chuyên gia' />
 
           <Stack>
-
             <Stack
               direction="row"
               justifyContent="space-between"
               alignItems="center"
+
               spacing={2} m={2}
             >
               <Typography variant='h4' >
@@ -307,6 +309,7 @@ export default function Home() {
                 </ListItem>
               );
             })}
+
           </Stack>
 
         </Stack>

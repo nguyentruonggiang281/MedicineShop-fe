@@ -49,7 +49,6 @@ function SwipeToSlide({product=[],limit}) {
     return (
         <>
             <Slider {...settings} style={{ margin: '0 10px'}}>
-{/* <Card key={product.id} sx={{ m: '0 10px' }}> */}
                 {product.slice(0, limit).map((data) => (
                     <ProductCard product={data} sx={{ m: '0 10px' }}/>
                 ))}
@@ -57,4 +56,5 @@ function SwipeToSlide({product=[],limit}) {
         </>
     );
 }
+
 export default SwipeToSlide;
