@@ -8,7 +8,7 @@
 const navConfig = [
   {
     title: 'THỰC PHẨM CHỨC NĂNG',
-    path: '/'
+    path: '/product-details'
   },
   {
     title: 'DƯỢC MỸ PHẨM',
@@ -32,7 +32,7 @@ const navConfig = [
   },
   {
     title: 'GÓC SỨC KHỎE',
-    path: '/',
+    path: '/blog',
   },
   {
     title: 'HỆ THỐNG NHÀ THUỐC',

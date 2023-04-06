@@ -6,7 +6,7 @@ import { Chip } from '@mui/material'
 ListChip.propTypes = {
   chipData: PropTypes.array.isRequired
 }
-function ListChip({ chipData = [], ...other }) {
+function ListChip({ chipData = [],  setFirstChipColor = false  }) {
   const [activeChip, setActiveChip] = useState(null);
 
   const handleChipClick = (chipKey) => {
@@ -14,14 +14,17 @@ function ListChip({ chipData = [], ...other }) {
   };
   return (
     <>
-      {chipData.map((data) => (
+      {chipData.map((data, index) => (
         <Chip
           key={data.key}
           label={data.label}
           clickable
           onClick={() => handleChipClick(data.key)}
-          color={activeChip === data.key ? 'primary' : 'default'}
-          {...other}
+          color={
+            activeChip === data.key || (index === 0 && setFirstChipColor && !activeChip)
+              ? 'primary'
+              : 'default'
+          }
         />
       ))}
     </>

@@ -7,6 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import {
   Card,
+  Link,
   Table,
   Stack,
   Paper,
@@ -22,8 +23,7 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  TablePagination,
-  Link
+  TablePagination
 
 } from '@mui/material';
 // components
@@ -344,19 +344,8 @@ export default function ProductsPage() {
           Delete
         </MenuItem>
       </Popover>
-      {/* onClick={() => deleteProduct(idRowProduct)} */}
       <DeleteDialog opendialog={opendialog} handleClose={handleCloseDialog} deleteProduct={deleteProduct} id={idRowProduct} />
 
-      {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClosee}>
-        <Alert onClose={handleClosee} severity="success" sx={{ width: '100%' }}>
-          <ul>
-            {selected.map(item => {
-              return <li>{item}</li>;
-            })}
-
-          </ul>
-        </Alert>
-      </Snackbar> */}
 
     </>
   );

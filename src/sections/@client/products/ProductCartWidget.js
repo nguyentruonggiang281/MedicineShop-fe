@@ -2,7 +2,7 @@
 import { styled } from '@mui/material/styles';
 import { Badge } from '@mui/material';
 // component
-import Iconify from '../../../components/iconify';
+import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
 
@@ -32,8 +32,8 @@ const StyledRoot = styled('div')(({ theme }) => ({
 export default function CartWidget() {
   return (
     <StyledRoot>
-      <Badge showZero badgeContent={0} color="error" max={99}>
-        <Iconify icon="eva:shopping-cart-fill" width={24} height={24} />
+      <Badge showZero badgeContent={0} color="error" max={10}>
+        <SvgColor src={`/assets/icons/navbar/ic_cart.svg`} sx={{ width: 24, height: 24 }} />
       </Badge>
     </StyledRoot>
   );
