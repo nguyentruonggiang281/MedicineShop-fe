@@ -5,4 +5,18 @@
 - Install dependencies: `npm i` 
 - Start the project: `npm start`
 
-![color](https://dribbble.com/shots/4523234-Ui-Style-Guide-1-0/attachments/1024154)
+## Path:
+- Login:
+  - http://localhost:3000/login
+- Client:
+  - http://localhost:3000/home
+  - http://localhost:3000/product-details
+  - http://localhost:3000/blog
+- Dashboard:
+  - http://localhost:3000/dashboard/app
+  - http://localhost:3000/dashboard/user
+  - Products:
+    - http://localhost:3000/dashboard/products
+    - http://localhost:3000/dashboard/products/new
+    - http://localhost:3000/dashboard/products/edit
+   - http://localhost:3000/dashboard/blog
