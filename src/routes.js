@@ -3,7 +3,6 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 import ClientLayout from './layouts/client/ClientLayout';
-//
 import BlogPage from './pages/admin/BlogPage';
 import UserPage from './pages/admin/UserPage';
 import LoginPage from './pages/admin/LoginPage';
@@ -11,8 +10,10 @@ import Page404 from './pages/admin/Page404';
 import ProductsPage from './pages/admin/product/ProductsPage';
 import DashboardAppPage from './pages/admin/DashboardAppPage';
 import CreateProduct from './pages/admin/product/CreateProduct';
-import EditProduct  from './pages/admin/product/EditProduct'
-import  Home from './pages/client/Home'
+import EditProduct from './pages/admin/product/EditProduct'
+import Home from './pages/client/Home'
+import ProductDetails from './pages/client/ProductDetails';
+// import FunctionalFoodsList from './pages/client/FunctionalFoodsList';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -26,15 +27,8 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
-        { path: 'new', element: <CreateProduct /> }
-      ],
-    },
-    {
-      path: '/dashboard/products',
-      element: <DashboardLayout />,
-      children: [
-        { path: 'new', element: <CreateProduct /> }, 
-        { path: 'edit', element: <EditProduct /> }
+        { path: 'products/new', element: <CreateProduct /> },
+        { path: 'products/edit', element: <EditProduct /> }
       ],
     },
     {
@@ -42,13 +36,19 @@ export default function Router() {
       element: <ClientLayout />,
       children: [
         { element: <Navigate to="/home" />, index: true },
-        { path: '/home', element: <Home/> },
-        { path: '/user', element: <UserPage /> },
-        { path: '/products', element: <ProductsPage /> },
-        { path: '/blog', element: <BlogPage /> },
-        { path: '/new', element: <CreateProduct /> }
-      ],
+        { path: 'home', element: <Home /> },
+        { path: 'product-details', element: <ProductDetails /> },
+         { path: 'blog', element: <BlogPage /> },
+        ],
     },
+    // {
+    //   path: '/product-details',
+    //   element: <DashboardLayout />,
+    //   children: [
+    //     { element: <Navigate to="/home" />, index: true },
+    //     { path: 'functional-foods', element: <FunctionalFoodsList/> },
+    //   ],
+    // },
     {
       path: '/login',
       element: <LoginPage />,

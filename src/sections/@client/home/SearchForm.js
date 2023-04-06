@@ -1,29 +1,15 @@
+// SECTIONS TÌM KIẾM
+// ------------------------------------------------------------------------
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
     Grid, Paper, Stack, Typography,
-
     OutlinedInput, Button,
-
 } from '@mui/material'
 import { styled } from "@mui/material/styles";
 import Scrollbar from '../../../components/scrollbar';
 import Iconify from '../../../components/iconify';
-import ListChip from './ListChip';
-
-
-// ----------------------------------------------------------------------------------
-
-const chipData = [
-    { key: 0, label: 'Angularrrrrrrrrr', href: "/" },
-    { key: 1, label: 'jQuery', href: "/" },
-    { key: 2, label: 'Polymer', href: "/" },
-    { key: 3, label: 'React', href: "/" },
-    { key: 4, label: 'Vue.js', href: "/" },
-    { key: 5, label: 'Polymer', href: "/" },
-    { key: 6, label: 'React', href: "/" },
-    { key: 7, label: 'Vue.js', href: "/" },
-    { key: 8, label: 'React', href: "/" },
-    { key: 9, label: 'jQuery', href: "/" }];
+import ListChip from '../../../components/list-chip/ListChip';
 
 // ----------------------------------------------------------------------------------
 const SearchContainer = styled("div")({
@@ -46,9 +32,11 @@ const SearchButton = styled(Button)({
 });
 // ----------------------------------------------------------------------------------
 
-function SearchForm() {
+SearchForm.propTypes = {
+    chipData: PropTypes.array.isRequired,
+}
 
-
+function SearchForm({ chipData = [] }) {
     return (
         <>
             <Grid
@@ -71,11 +59,10 @@ function SearchForm() {
                         <SearchContainer>
                             <SearchInput variant="standard" placeholder="Nhập từ khóa..." />
                             <SearchButton variant="contained" >
-                                <Iconify icon="eva:search-fill" sx={{width: 25, height: 25 }} />
+                                <Iconify icon="eva:search-fill" sx={{ width: 25, height: 25 }} />
                             </SearchButton>
                         </SearchContainer>
                         <Stack >
-
                             <Typography variant="subtitle1"> Tra Cứu Hàng Đầu</Typography>
                             <Scrollbar
                                 sx={{
@@ -84,9 +71,8 @@ function SearchForm() {
                                 }}
                             >
                                 <Stack direction={'row'} spacing={2.5} py={1}>
-                                <ListChip chipData={chipData}/>
+                                    <ListChip chipData={chipData} />
                                 </Stack>
-
                             </Scrollbar>
 
                         </Stack>

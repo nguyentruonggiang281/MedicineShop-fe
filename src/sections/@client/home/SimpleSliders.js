@@ -1,6 +1,9 @@
+// SECTIONS BANNER (Đầu trang)
+// ------------------------------------------------------------------------
 import React from 'react';
 import Slider from 'react-slick';
 import { Button } from '@mui/material';
+// ------------------------------------------------------------------------
 
 const sliderStyle = {
     position: "absolute",
@@ -23,6 +26,7 @@ const customArrowStyles = {
     position: "absolute",
     zIndex: 1,
 };
+// ------------------------------------------------------------------------
 
 const CustomNextArrow = (props) => (
     <Button
@@ -39,6 +43,7 @@ const CustomPrevArrow = (props) => (
         aria-label="Previous"
     />
 );
+// ------------------------------------------------------------------------
 
 function SimpleSlider() {
     const settings = {
