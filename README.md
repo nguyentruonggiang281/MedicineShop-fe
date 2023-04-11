@@ -12,6 +12,8 @@
   - http://localhost:3000/home
   - http://localhost:3000/product-details
   - http://localhost:3000/blog
+  - http://localhost:3000/temp
+  - http://localhost:3000/checkout
 - Dashboard:
   - http://localhost:3000/dashboard/app
   - http://localhost:3000/dashboard/user
