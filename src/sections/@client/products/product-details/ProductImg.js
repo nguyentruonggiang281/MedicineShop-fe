@@ -1,50 +1,91 @@
-// App.js
+
 import React, { useState, useEffect } from 'react';
-// import './slide.css';
+
+import Iconify from '../../../../components/iconify/Iconify';
+import { styled } from '@mui/material/styles';
 
 import Slider from "react-slick";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { IconButton, Typography } from '@mui/material';
+import { Image } from 'antd';
 
 const styles = {
   thumbnailSliderWrap: {
 
-    paddingLeft:'10%',
-    paddingRight:'10%',
+    paddingLeft: '10%',
+    paddingRight: '10%',
     marginTop: '15px',
     height: '100%',
-    
+    // boxShadow: 'inset -10px 0 5px -5px black, inset 10px 0 5px -5px black',
   },
   slickSlideImg: {
     width: '100%',
-    paddingLeft:'8px',
-    paddingRight:'8px'
+    paddingLeft: '8px',
+    paddingRight: '8px'
   },
 };
-const styleLai={
+const styleLai = {
   display: 'flex',
-  background:'#000'
+  background: '#000'
 }
+
+const SliderWrapper = styled('div')({
+  position: 'relative',
+});
+
+const ButtonWrapper = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  bottom: 2,
+  right: 2,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: theme.spacing(2),
+  background:'rgb(22 28 36 / 48%)',
+  borderRadius:'5px'
+}));
+
+
+const IconButtonArrow = styled(IconButton)({
+  color:'#c2c3c5',
+  '&:hover': { color:'white'} 
+});
 
 function ProductImg() {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
   const [slider2, setSlider2] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(1);
+
+  const handleAfterChange = (current) => {
+    setCurrentSlide(current + 1);
+  };
+
 
   useEffect(() => {
     setNav1(slider1);
     setNav2(slider2);
   }, [slider1, slider2]);
 
-
   const settingsMain = {
     slidesToShow: 1,
     slidesToScroll: 1,
     swipeToSlide: true,
     arrows: false,
-    asNavFor: '.slider-nav'
+    asNavFor: '.slider-nav',
+    beforeChange: (current, next) => {
+      setCurrentSlide(next + 1);
+    },
+    afterChange: handleAfterChange,
+  };
+
+
+  const handlePrevClick = () => {
+    slider1.slickPrev();
+  };
+
+  const handleNextClick = () => {
+    slider1.slickNext();
   };
 
   const settingsThumbs = {
@@ -62,61 +103,73 @@ function ProductImg() {
   const slidesData = [
     {
       id: 1,
-      title: 'repellendus id ullam',
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00022782-sua-rua-mat-nghe-nano-ngua-mun-neo-cleanser-86g-1735-62ae_large.jpg'
     }, {
       id: 2,
-      title: 'excepturi consequatur est',
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00017326-sebiaclear-gel-moussant-200ml-svr-7018-62ae_large.JPG'
     }, {
       id: 3,
-      title: 'eius doloribus blanditiis',
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00028445-dao-cao-rau-gillette-super-thin-can-vang-goi-2-cai-1139-62b4_large.jpg'
     }, {
       id: 4,
-      title: 'nihil voluptates delectus',
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00030434-active-lung-400mg-new-nordic-2x15-5527-62af_large.jpg'
     }, {
       id: 5,
-      title: 'nemo dolorem necessitatibus',
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/05/00345910-xit-hong-xuyen-tam-lien-hai-thuong-vuong-30ml-5572-6272_large.jpg'
     }, {
       id: 6,
-      title: 'dolorem quibusdam quasi',
-
+      img: 'https://nhathuoclongchau.com.vn/images/product/2022/07/00500213-bcs-safefit-freezer-max-s52-3-cai-gel-mat-lanh-sang-khoai-6230-62c3_large.jpg'
     },
   ];
 
+
   return (
 
-      <div className="slider-wrapper">
+    <div className="slider-wrapper">
+ <SliderWrapper>
+      <Slider
+        {...settingsMain}
+        asNavFor={nav2}
+        ref={slider => (setSlider1(slider))}
+      >
+        {slidesData.map((slide) =>
+          <div className="slick-slide"  key={slide.id}>
+            <img className="slick-slide-image" src={`${slide.img}`} alt='product' />
+          </div>
 
+        )}
+
+      </Slider>
+      <ButtonWrapper>
+        <IconButtonArrow sx={{p:'5px 6px 5px 3px '}} onClick={handlePrevClick}>
+          <Iconify icon={'ic:sharp-keyboard-arrow-left'} />
+        </IconButtonArrow>
+        <Typography variant='subtitle2' sx={{ color: 'white', }}>
+          {currentSlide} / {slidesData.length}
+        </Typography>
+        <IconButtonArrow sx={{p:'5px 3px 5px 6px'}} onClick={handleNextClick}>
+          <Iconify icon={'ic:sharp-keyboard-arrow-right'} />
+        </IconButtonArrow>
+      </ButtonWrapper>
+</SliderWrapper>
+
+
+      <div style={styles.thumbnailSliderWrap} className="thumbnail-slider-wrap">
         <Slider
-          {...settingsMain}
-          asNavFor={nav2}
-          ref={slider => (setSlider1(slider))}
-        >
+          {...settingsThumbs}
+          asNavFor={nav1}
+          ref={slider => (setSlider2(slider))}>
 
-          {slidesData.map((slide) =>
+          {slidesData.map((slide,index) =>
 
-            <div className="slick-slide" key={slide.id}>
-              <img className="slick-slide-image" src={`https://picsum.photos/800/400?img=${slide.id}`} alt='product' />
+            <div style={styleLai} className="slick-slide" key={index}>
 
+              <Image style={styles.slickSlideImg} className="slick-slide-image" src={`${slide.img}`} alt='product' />
             </div>
-
           )}
-
         </Slider>
-        <div style={styles.thumbnailSliderWrap} className="thumbnail-slider-wrap">
-          <Slider
-            {...settingsThumbs}
-            asNavFor={nav1}
-            ref={slider => (setSlider2(slider))}>
-
-            {slidesData.map((slide) =>
-
-              <div style={styleLai} className="slick-slide" key={slide.id}>
-                <img style={styles.slickSlideImg} className="slick-slide-image" src={`https://picsum.photos/800/400?img=${slide.id}`} alt='product' />
-              </div>
-            )}
-          </Slider>
-        </div>
       </div>
+    </div>
 
   );
 }

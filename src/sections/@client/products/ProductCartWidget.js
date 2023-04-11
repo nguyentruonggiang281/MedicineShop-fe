@@ -25,16 +25,22 @@ const StyledRoot = styled('div')(({ theme }) => ({
   borderBottomLeftRadius: Number(theme.shape.borderRadius) * 2,
   transition: theme.transitions.create('opacity'),
   '&:hover': { opacity: 0.72 },
+  [theme.breakpoints.down('lg')]: {
+    top: theme.spacing(9),
+
+  },
 }));
 
 // ----------------------------------------------------------------------
 
 export default function CartWidget() {
   return (
-    <StyledRoot>
+    <a href='/checkout'>
+    <StyledRoot >
       <Badge showZero badgeContent={0} color="error" max={10}>
         <SvgColor src={`/assets/icons/navbar/ic_cart.svg`} sx={{ width: 24, height: 24 }} />
       </Badge>
     </StyledRoot>
+    </a>
   );
 }

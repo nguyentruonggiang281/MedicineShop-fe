@@ -1,54 +1,19 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Breadcrumbs, Button, Container, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-// import ProductSlider from '../../sections/@client/products/ProductSlider';
-import { ProductImg, ProductInfoForm } from '../../sections/@client/products/product-details';
-import Iconify from '../../components/iconify/Iconify';
-import Quantity from '../../sections/@client/products/product-details/Quantity';
-import OptionList from '../../sections/@client/products/product-details/OptionList';
-import TabDescriptionAndReview from '../../sections/@client/products/product-details/LabTabs';
+// @mui
+import { Breadcrumbs, Container, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+
+// sections
+import { ProductImg, ProductInfoForm, Quantity, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
 import { FeaturedSlide } from '../../sections/@client/home';
+
+// components
+import Iconify from '../../components/iconify';
+
 import PRODUCTS from '../../_mock/products-clone';
+import { StyledSeparator } from '../../components/custom/CustomSpan';
+import { StyledButtonYellow, StyledButtonGreen } from '../../components/custom/CustomButton';
 
-
-const StyledSeparator = styled('span')({
-    color: '#919eab',
-    fontSize: '1.5em'// tăng kích thước của ký tự separator lên 1.5 lần so với kích thước mặc định
-});
-
-
-const StyledButtonAdd = styled(Button)(() => ({
-    color: '#000',
-    width: '100%',
-    height: '48px',
-    backgroundColor: 'rgb(255 171 0)',
-    '&:hover': {
-        backgroundColor: 'rgb(183, 110, 0)',
-
-        boxShadow: 'rgba(255, 171, 0, 0.24) 0px 8px 16px 0px'
-    }
-}));
-
-const StyledButtonBuy = styled(Button)(() => ({
-    color: '#fff',
-    width: '100%',
-    backgroundColor: 'rgb(0 171 85)',
-    '&:hover': {
-        backgroundColor: 'rgb(0, 123, 85)',
-
-        boxShadow: 'rgba(0, 171, 85, 0.24) 0px 8px 16px 0px'
-    }
-}));
-// const products = [
-//     { name: '1', img: 'https://nhathuoclongchau.com.vn/images/product/2022/07/00500213-bcs-safefit-freezer-max-s52-3-cai-gel-mat-lanh-sang-khoai-6230-62c3_large.jpg' },
-//     { name: '2', img: 'https://nhathuoclongchau.com.vn/images/product/2022/05/00345910-xit-hong-xuyen-tam-lien-hai-thuong-vuong-30ml-5572-6272_large.jpg' },
-//     { name: '3', img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00030434-active-lung-400mg-new-nordic-2x15-5527-62af_large.jpg' },
-//     { name: '4', img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00028445-dao-cao-rau-gillette-super-thin-can-vang-goi-2-cai-1139-62b4_large.jpg' },
-//     { name: '5', img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00017326-sebiaclear-gel-moussant-200ml-svr-7018-62ae_large.JPG' },
-//     { name: '6', img: 'https://nhathuoclongchau.com.vn/images/product/2022/06/00022782-sua-rua-mat-nghe-nano-ngua-mun-neo-cleanser-86g-1735-62ae_large.jpg' },
-
-// ]
 const options = ['Hột', 'Viên', 'Lọ sóc'];
 
 function ProductDetails() {
@@ -60,7 +25,7 @@ function ProductDetails() {
 
 
             <Container>
-                <Grid container spacing={3} >
+                <Grid container spacing={0} >
                     {/* mục Trang chủ • Category • Category • Tên sản phẩm */}
                     <Grid item xs={12} mt={1} >
                         <Breadcrumbs separator={<StyledSeparator>&nbsp;•&nbsp;</StyledSeparator>} aria-label="breadcrumb" >
@@ -68,10 +33,10 @@ function ProductDetails() {
                                 Trang chủ
                             </Link>
                             <Link underline="hover" color="text.primary" href="#">
-                                Category
+                                Category1
                             </Link>
                             <Link underline="hover" color="text.primary" href="#">
-                                Category
+                                Category2
                             </Link>
                             <Typography color="inherit" >Tên sản phẩm</Typography>
                         </Breadcrumbs>
@@ -79,17 +44,20 @@ function ProductDetails() {
 
                     {/* hình ảnh sản phẩm */}
                     <Grid item xs={12} md={6} lg={7}>
+
                         <ProductImg />
+
                     </Grid>
                     {/* thông tin sp */}
-                    <Grid item xs={12} md={6} lg={5} mb={2}>
+                    <Grid item xs={12} md={6} lg={5} p={'16px 32px 16px 40px'} >
 
-                        <Stack spacing={2} p={'16px 32px 0 16px'}>
+                        <Stack spacing={2} >
                             {/* thông tin tên , giá ,... */}
                             <ProductInfoForm />
 
+                            <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* option lựa đơn vị bán, số lượng */}
-                            <Stack sx={{ borderTop: '1px dashed lightgrey', pt: 2 }}>
+                            <Stack>
 
                                 {/* đơn vị bán */}
                                 <Grid container alignItems="center" spacing={2} >
@@ -114,20 +82,21 @@ function ProductDetails() {
                                 </Stack>
                             </Stack>
 
+                            <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* Hai button thêm vào giỏ hàng và mua ngay */}
                             <Stack
                                 direction="row"
                                 spacing={2}
-                                pt={2}
-                                sx={{ borderTop: '1px dashed lightgrey' }}
+                               
+
                             >
                                 {/* thêm vào giỏ */}
-                                <StyledButtonAdd>
+                                <StyledButtonYellow>
                                     <Iconify icon={'ic:round-add-shopping-cart'} />
                                     &nbsp;&nbsp;Add To Cart
-                                </StyledButtonAdd>
+                                </StyledButtonYellow>
                                 {/* mua ngay */}
-                                <StyledButtonBuy>Buy Now</StyledButtonBuy>
+                                <StyledButtonGreen>Buy Now</StyledButtonGreen>
                             </Stack>
 
                             {/* nút share vô tri */}
@@ -142,8 +111,9 @@ function ProductDetails() {
 
 
 
+                    
                     {/* cam kết (ko cần quan tâm)*/}
-                    <Grid item xs={12} md={12} sx={{ borderTop: '1px dashed lightgrey' }}>
+                    <Grid item xs={12} md={12} sx={{ borderTop: '1px dashed lightgrey' }} py={3}>
                         <Typography variant='h5' align='center' textTransform={'uppercase'}>Medicine shop cam kết</Typography>
                     </Grid>
                     <Grid item xs={4} md={4}>
@@ -164,7 +134,7 @@ function ProductDetails() {
                         </Stack>
                     </Grid>
 
-                    <Grid item xs={4} md={4}>
+                    <Grid item xs={4} md={4} >
                         <Stack alignItems="center" spacing={1}>
                             <Stack
                                 alignItems="center"
@@ -199,12 +169,12 @@ function ProductDetails() {
                     </Grid>
 
                     {/* tabs mô tả sản phẩm và quánh giá nhận xét */}
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={12} pt={3}>
                         <TabDescriptionAndReview />
                     </Grid>
 
-                    <Grid item xs={12} md={12}>
-                        <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={5}/>
+                    <Grid item xs={12} md={12} pt={3}>
+                        <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
                     </Grid>
                 </Grid>
 

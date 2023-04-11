@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Iconify from 'src/components/iconify/Iconify';
+import Iconify from '../../../../components/iconify/Iconify';
 
 const QuantityWrapper = styled(Box)({
   display: 'flex',

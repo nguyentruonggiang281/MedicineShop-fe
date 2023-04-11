@@ -24,9 +24,9 @@ const StyledTick = styled(Typography)(({ theme }) => ({
     height: 0,
     top: 0,
     right: 0,
-    borderRadius: '0 14% 0 100%',
-    borderBottom: `21px solid transparent`,
-    borderRight: `25px solid ${theme.palette.primary.main}`,
+    borderRadius: '0 10% 0 100%',
+    borderBottom: `28px solid transparent`,
+    borderRight: `28px solid ${theme.palette.primary.main}`,
     position: 'absolute',
 
     transformOrigin: '100% 0%',
@@ -38,7 +38,7 @@ const StyledTick = styled(Typography)(({ theme }) => ({
         borderBottom: `2px solid ${theme.palette.background.default}`,
         borderRight: `2px solid ${theme.palette.background.default}`,
         transform: 'rotate(45deg)',
-        transformOrigin: '125% 210%',
+        transformOrigin: '180% 260%',
     },
 }));
 

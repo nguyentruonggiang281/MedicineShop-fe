@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useTheme } from '@mui/material/styles';
 import { Paper } from '@mui/material';
 
 const Root = styled(Paper)({
@@ -54,12 +53,12 @@ const TabPanel = styled('div')({
 
 const TabPanelContent = styled('p')({
   fontSize: '14px',
-  lineHeight: 0.5,
+  lineHeight: 1.5,
+  margin:0,
 });
 
 const TabDescriptionAndReview = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const theme = useTheme();
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -81,7 +80,7 @@ const TabDescriptionAndReview = () => {
       {selectedTab === 0 && (
         <TabPanel>
           <TabPanelContent>
-            This is the description tab.
+            This <br/>is <br/>the <br/>description <br/>tab.
           </TabPanelContent>
         </TabPanel>
       )}

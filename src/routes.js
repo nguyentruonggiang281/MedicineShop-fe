@@ -13,6 +13,8 @@ import CreateProduct from './pages/admin/product/CreateProduct';
 import EditProduct from './pages/admin/product/EditProduct'
 import Home from './pages/client/Home'
 import ProductDetails from './pages/client/ProductDetails';
+import ProductsList from './pages/client/ProductsListPage';
+import Checkout from './pages/client/CheckoutPage';
 // import FunctionalFoodsList from './pages/client/FunctionalFoodsList';
 // ----------------------------------------------------------------------
 
@@ -39,6 +41,9 @@ export default function Router() {
         { path: 'home', element: <Home /> },
         { path: 'product-details', element: <ProductDetails /> },
          { path: 'blog', element: <BlogPage /> },
+         { path: 'temp', element: <ProductsList /> },
+         { path: 'checkout', element: <Checkout/> },
+
         ],
     },
     // {
