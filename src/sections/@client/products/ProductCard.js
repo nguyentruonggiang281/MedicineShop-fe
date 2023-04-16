@@ -27,10 +27,13 @@ const StyledProductImg = styled('img')({
 });
 
 const textStyle = {
-  height: '50px',
+  display: '-webkit-box',
   overflow: 'hidden',
-  display: 'block',
   textOverflow: 'ellipsis',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+  lineHeight: 1.2,
+  height: '2.4em', // 2 lines * line-height of 1.2
 };
 // ----------------------------------------------------------------------
 

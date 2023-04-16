@@ -1,10 +1,10 @@
 import React from 'react';
-import { Dialog, Button, useMediaQuery, useTheme, Typography, Box, Stack, Divider, Link } from '@mui/material';
+import { Dialog, Button, useMediaQuery, useTheme, Typography, Box, Stack, Link } from '@mui/material';
 import { StyledButtonGreen } from '../../../../components/custom/CustomButton';
 import Iconify from '../../../../components/iconify/Iconify';
 
 
-const MyDialog = ({ open, handleClose }) => {
+const OrderSuccessDialog = ({ open, handleClose }) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -56,7 +56,7 @@ const MyDialog = ({ open, handleClose }) => {
                 <Typography>All the best.</Typography>
 
                 <Stack direction={'row'} spacing={2} sx={{ width: '100%', pt: 4,px:1, borderTop: '1px dashed lightgrey' }}>
-                    <Button fullWidth variant="outlined" sx={{ color: '#000', py: '8px' }} onClick={handleClose} href='/temp'>
+                    <Button fullWidth variant="outlined" sx={{ color: '#000', py: '8px' }} onClick={handleClose} href='/home'>
                         <Iconify icon='ic:outline-keyboard-arrow-left' mr={1} />
                         Continue Shopping
                     </Button>
@@ -70,4 +70,4 @@ const MyDialog = ({ open, handleClose }) => {
     );
 };
 
-export default MyDialog;
+export default OrderSuccessDialog;
