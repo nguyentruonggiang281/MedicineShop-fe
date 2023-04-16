@@ -1,30 +1,25 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Iconify from '../../../../components/iconify/Iconify';
+import { IconButton } from '@mui/material';
 
 const QuantityWrapper = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   width: 'fit-content',
-  border: '1px solid gray',
+  border: '1px solid #919eab52',
   borderRadius: '4px',
   height: '32px',
 });
 
-const QuantityButton = styled(Button)({
-  minWidth: '32px',
-  height: '32px',
-  padding: '0',
-  borderRadius: '0',
-  '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-  },
+const QuantityButton = styled(IconButton)({
+  width: '24px',
+  height: '24px',
+  padding: '1px',
   '&:disabled': {
-    color: 'gray',
-
+    color: '#919eabcc',
   },
 });
 

@@ -10,6 +10,7 @@ export const StyledButtonYellow = styled(Button)(() => ({
         backgroundColor: 'rgb(183, 110, 0)',
         boxShadow: 'rgba(255, 171, 0, 0.24) 0px 8px 16px 0px'
     }
+
 }));
 
 export const StyledButtonGreen = styled(Button)(() => ({
@@ -19,7 +20,12 @@ export const StyledButtonGreen = styled(Button)(() => ({
     '&:hover': {
         backgroundColor: 'rgb(0, 123, 85)',
         boxShadow: 'rgba(0, 171, 85, 0.24) 0px 8px 16px 0px'
+    },
+    '&:disabled': {
+        background: "#919eab3d",
+        color: "#919eabcc"
     }
+
 }));
 
 
