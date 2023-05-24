@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ReactHtmlParser from "html-react-parser";
+import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -51,13 +53,14 @@ const TabPanel = styled('div')({
   padding: '24px',
 });
 
-const TabPanelContent = styled('p')({
-  fontSize: '14px',
-  lineHeight: 1.5,
-  margin:0,
-});
 
-const TabDescriptionAndReview = () => {
+
+
+TabDescriptionAndReview.propTypes={
+  product: PropTypes.object,
+}
+
+function TabDescriptionAndReview  ({product})  {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -79,16 +82,18 @@ const TabDescriptionAndReview = () => {
      
       {selectedTab === 0 && (
         <TabPanel>
-          <TabPanelContent>
-            This <br/>is <br/>the <br/>description <br/>tab.
-          </TabPanelContent>
+         
+            {/* This <br/>is <br/>the <br/>description <br/>tab. */}
+            { ReactHtmlParser(decodeURIComponent(product.description))}
+            
+          
         </TabPanel>
       )}
       {selectedTab === 1 && (
         <TabPanel>
-          <TabPanelContent>
+         
             This is the review tab.
-          </TabPanelContent>
+          
         </TabPanel>
       )}
     </Root>

@@ -92,7 +92,7 @@ export default function ProductListToolbar({ numSelected, filterName, onFilterNa
               {option.title}
             </li>
           )}
-          limitTags
+          limitTags={4}
           size="small"
           style={{ minWidth: 170}}
           renderInput={(params) => (

@@ -15,6 +15,7 @@ import Home from './pages/client/Home'
 import ProductDetails from './pages/client/ProductDetails';
 import ProductsList from './pages/client/ProductsListPage';
 import Checkout from './pages/client/CheckoutPage';
+import AddressForm from './sections/@client/products/checkout/AddressForm';
 // import FunctionalFoodsList from './pages/client/FunctionalFoodsList';
 // ----------------------------------------------------------------------
 
@@ -39,11 +40,11 @@ export default function Router() {
       children: [
         { element: <Navigate to="/home" />, index: true },
         { path: 'home', element: <Home /> },
-        { path: 'product-details', element: <ProductDetails /> },
+        { path: 'product-details/:id', element: <ProductDetails /> },
          { path: 'blog', element: <BlogPage /> },
          { path: 'temp', element: <ProductsList /> },
          { path: 'checkout', element: <Checkout/> },
-
+         { path: 'address', element: <AddressForm/> },
         ],
     },
     // {

@@ -31,6 +31,4 @@ function BillingAddress() {
     )
 }
 
-// BillingAddress.propTypes = {}
-
 export default BillingAddress

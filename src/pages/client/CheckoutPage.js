@@ -17,6 +17,7 @@ import { Helmet } from 'react-helmet-async';
 import BillingAndAddress from '../../sections/@client/products/checkout/BillingAndAddress';
 import Cart from '../../sections/@client/products/checkout/Cart';
 import Payment from '../../sections/@client/products/checkout/Payment';
+import OrderSuccessDialog from 'src/sections/@client/products/checkout/OrderSuccessDialog';
 
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
@@ -134,7 +135,7 @@ const Checkout = () => {
       case 1:
         return <BillingAndAddress handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} />;
       case 2:
-        return <Payment handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} handleClose={handleClose} open={open}/>;
+        return <Payment handleBack={handleBack} handleNext={handleNext} activeStep={activeStep} />;
       default:
         return 'Unknown stepIndex';
     }
@@ -175,6 +176,7 @@ const Checkout = () => {
             )}
           </Grid>
         </Grid>
+        <OrderSuccessDialog open={open} handleClose={handleClose} />
       </Container>
     </>
   );

@@ -13,6 +13,7 @@ import {
  
   import Label from '../../../../components/label/Label';
   import OrderSummary from './OrderSummary';
+import AddressForm from './AddressForm';
 
 
 
@@ -33,6 +34,17 @@ BillingAndAddress.propTypes = {
       setOpen(null);
     };
   
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleOpenDialog = () => {
+      setOpenDialog(true);
+    };
+  
+    const handleCloseDialog = () => {
+      setOpenDialog(false);
+    };
+  
+
     return (
       <>
         <Container >
@@ -83,7 +95,7 @@ BillingAndAddress.propTypes = {
                   <Iconify icon='ic:outline-keyboard-arrow-left' mr={1} />Back
                 </Button>
   
-                <StyledButtonGreenText size='small'>
+                <StyledButtonGreenText size='small' onClick={handleOpenDialog}>
                   <Iconify icon='ic:sharp-plus' sx={{ height: 16, width: 16 }} />
                   &nbsp; Thêm địa chỉ mới &nbsp;
                 </StyledButtonGreenText>
@@ -126,6 +138,7 @@ BillingAndAddress.propTypes = {
             Delete
           </MenuItem>
         </Popover>
+        <AddressForm open={openDialog} onClose={handleCloseDialog}/>
       </>
     );
   };

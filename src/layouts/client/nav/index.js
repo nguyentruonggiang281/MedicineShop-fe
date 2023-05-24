@@ -11,10 +11,12 @@ import useResponsive from '../../../hooks/useResponsive';
 // components
 import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
-import NavSection from '../../../components/nav-header';
+import NavSectionHeader from '../../../components/nav-header';
 // import NavSection from '../../../components/nav-header/NavSection';
 //
 import navConfig from './config';
+import NavSection from '../../../components/nav-section';
+import Navvvvvvvvvv from './Navvvvvvvvvv';
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -112,6 +114,7 @@ export default function Nav({ openNav, onCloseNav }) {
           variant="permanent"
           PaperProps={{
             sx: {
+              // overflow: 'hidden',
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
@@ -123,7 +126,7 @@ export default function Nav({ openNav, onCloseNav }) {
             },
           }}
         >
-          <NavSection data={navConfig} sx={{
+          <NavSectionHeader data={navConfig} sx={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
@@ -132,6 +135,7 @@ export default function Nav({ openNav, onCloseNav }) {
             bgcolor: 'background.paper',
 
           }} />
+          {/* <Navvvvvvvvvv/> */}
         </Drawer>
       ) : (
         <Drawer

@@ -1,33 +1,83 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import {  useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import { Breadcrumbs, Container, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
 
 // sections
 import { ProductImg, ProductInfoForm, Quantity, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
-import { FeaturedSlide } from '../../sections/@client/home';
+// import { FeaturedSlide } from '../../sections/@client/home';
 
 // components
 import Iconify from '../../components/iconify';
 
-import PRODUCTS from '../../_mock/products-clone';
 import { StyledSeparator } from '../../components/custom/CustomSpan';
 import { StyledButtonYellow, StyledButtonGreen } from '../../components/custom/CustomButton';
+import { getById } from '../../api/api';
+import SkeletonLoading from '../../components/skeleton/SkeletonLoading';
+import { getProductById } from '../../redux/products/ProductDetail';
+import { getAllProduct } from 'src/redux/products/productList';
+
 
 const options = ['Hột', 'Viên', 'Lọ sóc'];
 
 function ProductDetails() {
+
+    
+//   const [product, setProduct] = useState([]);
+
+  const { id } = useParams();
+  
+//   const loadProducts = async () => {
+//     try {
+//       // Make a GET request to the products API endpoint
+//       const data = await getById(`products`, id);
+//   console.log(data);
+//       // Set the state variable with the result of the API call
+//       setProduct(data);
+//     } catch (error) {
+//       console.error(error);
+//       // Handle the error here, e.g. show a user-friendly message
+//     }
+//   };
+  
+  
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       await loadProducts();
+//     };
+//     fetchData();
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
+  
+const dispatch = useDispatch();
+const product = useSelector((state) => state.products.productList.allProduct);
+const loading = useSelector((state) => state.products.productList.loading);
+// const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+useEffect(() => {
+  dispatch(getAllProduct());
+}, [dispatch]);
+console.log("product", product);
+// if (loading) {
+//   return (
+//   <SkeletonLoading/>
+//   )
+// }
+
     return (
-        <>
+       
+        <> 
             <Helmet>
                 <title>Chi tiết sản phẩm</title>
             </Helmet>
-
+{ loading ? <SkeletonLoading/> :  
 
             <Container>
                 <Grid container spacing={0} >
                     {/* mục Trang chủ • Category • Category • Tên sản phẩm */}
-                    <Grid item xs={12} mt={1} >
+                    <Grid item xs={12} my={1} >
                         <Breadcrumbs separator={<StyledSeparator>&nbsp;•&nbsp;</StyledSeparator>} aria-label="breadcrumb" >
                             <Link underline="hover" color="text.primary" href="/home">
                                 Trang chủ
@@ -38,14 +88,16 @@ function ProductDetails() {
                             <Link underline="hover" color="text.primary" href="#">
                                 Category2
                             </Link>
-                            <Typography color="inherit" >Tên sản phẩm</Typography>
+                            {/* {loading ? <SkeletonLoading/> :
+                            <Typography color="inherit" >{product[0].name}</Typography>
+                            } */}
                         </Breadcrumbs>
                     </Grid>
 
                     {/* hình ảnh sản phẩm */}
                     <Grid item xs={12} md={6} lg={7}>
 
-                        <ProductImg />
+                        {/* <ProductImg data={product.assets}/> */}
 
                     </Grid>
                     {/* thông tin sp */}
@@ -53,7 +105,7 @@ function ProductDetails() {
 
                         <Stack spacing={2} >
                             {/* thông tin tên , giá ,... */}
-                            <ProductInfoForm />
+                            {/* <ProductInfoForm  product={product} /> */}
 
                             <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* option lựa đơn vị bán, số lượng */}
@@ -108,10 +160,6 @@ function ProductDetails() {
                             </Stack>
                         </Stack>
                     </Grid>
-
-
-
-                    
                     {/* cam kết (ko cần quan tâm)*/}
                     <Grid item xs={12} md={12} sx={{ borderTop: '1px dashed lightgrey' }} py={3}>
                         <Typography variant='h5' align='center' textTransform={'uppercase'}>Medicine shop cam kết</Typography>
@@ -170,20 +218,21 @@ function ProductDetails() {
 
                     {/* tabs mô tả sản phẩm và quánh giá nhận xét */}
                     <Grid item xs={12} md={12} pt={3}>
-                        <TabDescriptionAndReview />
+                        {/* <TabDescriptionAndReview product={product} /> */}
                     </Grid>
 
-                    <Grid item xs={12} md={12} pt={3}>
+                    {/* <Grid item xs={12} md={12} pt={3}>
                         <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
 
 
             </Container>
-
+}
 
         </>
     )
+
 }
 
 export default ProductDetails

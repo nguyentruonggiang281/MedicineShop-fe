@@ -13,17 +13,14 @@ import DeliveryOptions from './DeliveryOptions';
 import PaymentOptions from './PaymentOptions';
 import BillingAddress from './BillingAddress';
 import OrderSummary from './OrderSummary';
-import OrderSuccessDialog from './OrderSuccessDialog';
 import { StyledButtonGreen } from '../../../../components/custom/CustomButton';
 
 Payment.propTypes = {
   handleBack: PropTypes.func,
   handleNext: PropTypes.func,
-  handleClose: PropTypes.func,
   activeStep: PropTypes.number,
-  open: PropTypes.bool,
 }
-function Payment({ handleBack, handleNext, activeStep, open, handleClose }) {
+function Payment({ handleBack, handleNext, activeStep}) {
 
   return (
     <Container >
@@ -61,7 +58,7 @@ function Payment({ handleBack, handleNext, activeStep, open, handleClose }) {
           </div>
           {/* --------------------------------------- BUTTON --------------------------------------------------- */}
           <StyledButtonGreen sx={{ py: 1.3, mt: 3 }} onClick={handleNext} >Complete Order</StyledButtonGreen>
-          <OrderSuccessDialog open={open} handleClose={handleClose} />
+          
         </Grid>
       </Grid>
     </Container>

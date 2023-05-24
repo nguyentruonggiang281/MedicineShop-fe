@@ -6,12 +6,14 @@ import { Button } from '@mui/material';
 // ------------------------------------------------------------------------
 
 const sliderStyle = {
-    position: "absolute",
+    // position: "absolute",
+    // width: "100%",
+    // left: 0
+    height: "100%",
     width: "100%",
-    left: 0
 }
 const divStyle = {
-    position: "relative",
+    // position: "relative",
     width: "100%",
     height: "100%",
 };
@@ -19,6 +21,7 @@ const divStyle = {
 const imgStyle = {
     width: "100%",
     height: "100%",
+    borderRadius: '10px',
     objectFit: "cover"
 };
 
@@ -29,17 +32,17 @@ const customArrowStyles = {
 // ------------------------------------------------------------------------
 
 const CustomNextArrow = (props) => (
-    <Button
+    <button
         {...props}
-        style={{ ...customArrowStyles, right: "0px" }}
+        style={{ ...customArrowStyles, right: "10px" }}
         aria-label="Next"
     />
 );
 
 const CustomPrevArrow = (props) => (
-    <Button
+    <button
         {...props}
-        style={{ ...customArrowStyles, left: "0px" }}
+        style={{ ...customArrowStyles, left: "10px" }}
         aria-label="Previous"
     />
 );
@@ -60,20 +63,21 @@ function SimpleSlider() {
     return (
         <>
             <Slider {...settings} style={sliderStyle}>
+                <div style={divStyle}>
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945510/asset/BANNER_WEB_PC_805_X246_2_f75c7cc436_cip4mw.webp' alt="sss" style={imgStyle} />
+                </div>
                 <div style={divStyle} ><a href="/blog">
-                    <img src='https://nhathuoclongchau.com.vn/upload/slide/1671181106-Agcp-dac-quyen-mua-hang-1k.jpg' alt="sss" style={imgStyle} />
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945533/asset/Banner_Web_PC_1610x492_b976d8fc91_l9mkhw.webp' alt="sss" style={imgStyle} />
                 </a></div>
                 <div style={divStyle}>
-                    <img src='https://nhathuoclongchau.com.vn/upload/slide/1678700509-NBeS-kem-chong-nang-2023.png' alt="sss" style={imgStyle} />
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945555/asset/Banner_Web_PC_1610x492_388508e270_hhbfjm.webp' alt="sss" style={imgStyle} />
+                </div>
+                
+                <div style={divStyle}>
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945574/asset/Banner_Destop_cb5af066c4_cfqzf3.webp' alt="sss" style={imgStyle} />
                 </div>
                 <div style={divStyle}>
-                    <img src='https://nhathuoclongchau.com.vn/upload/slide/1671181106-Agcp-dac-quyen-mua-hang-1k.jpg' alt="sss" style={imgStyle} />
-                </div>
-                <div style={divStyle}>
-                    <img src='https://nhathuoclongchau.com.vn/upload/slide/1678355619-6lB9-chuyen-trang-sanofi.jpg' alt="sss" style={imgStyle} />
-                </div>
-                <div style={divStyle}>
-                    <img src='https://nhathuoclongchau.com.vn/upload/slide/1677150972-hsMN-cam-cum.png' alt="sss" style={imgStyle} />
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945600/asset/Banner_Destop_2d9531d01d_slwirv.webp' alt="sss" style={imgStyle} />
                 </div>
             </Slider>  
         </>
