@@ -23,7 +23,7 @@ import { getAllProduct } from 'src/redux/products/productList';
 const options = ['Hột', 'Viên', 'Lọ sóc'];
 
 function ProductDetails() {
-
+const [loading, setLoading] = useState(true);
     
 //   const [product, setProduct] = useState([]);
 
@@ -52,19 +52,26 @@ function ProductDetails() {
 //   }, []);
   
 const dispatch = useDispatch();
-const product = useSelector((state) => state.products.productList.allProduct);
-const loading = useSelector((state) => state.products.productList.loading);
+const product = useSelector((state) => state.products.productDetail.product);
+// const loading = useSelector((state) => state.products.productDetail.loading);
 // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
 useEffect(() => {
-  dispatch(getAllProduct());
-}, [dispatch]);
+  dispatch(getProductById(id));
+}, [id]);
 console.log("product", product);
-// if (loading) {
-//   return (
-//   <SkeletonLoading/>
-//   )
-// }
+
+
+setTimeout(() => {
+  setLoading(false);
+}, 500);
+
+
+if (loading) {
+  return (
+  <SkeletonLoading/>
+  )
+}
 
     return (
        
@@ -72,7 +79,7 @@ console.log("product", product);
             <Helmet>
                 <title>Chi tiết sản phẩm</title>
             </Helmet>
-{ loading ? <SkeletonLoading/> :  
+ 
 
             <Container>
                 <Grid container spacing={0} >
@@ -88,16 +95,16 @@ console.log("product", product);
                             <Link underline="hover" color="text.primary" href="#">
                                 Category2
                             </Link>
-                            {/* {loading ? <SkeletonLoading/> :
-                            <Typography color="inherit" >{product[0].name}</Typography>
-                            } */}
+                            {/* {loading ? <SkeletonLoading/> : */}
+                            <Typography color="inherit" >{product.name}</Typography>
+                            {/* } */}
                         </Breadcrumbs>
                     </Grid>
 
                     {/* hình ảnh sản phẩm */}
                     <Grid item xs={12} md={6} lg={7}>
 
-                        {/* <ProductImg data={product.assets}/> */}
+                        <ProductImg data={product.assets}/>
 
                     </Grid>
                     {/* thông tin sp */}
@@ -228,7 +235,7 @@ console.log("product", product);
 
 
             </Container>
-}
+
 
         </>
     )

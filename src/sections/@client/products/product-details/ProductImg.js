@@ -138,8 +138,8 @@ function ProductImg( props ) {
         ref={slider => (setSlider1(slider))}
       >
         {props.data.map((slide,index) =>
-          <div className="slick-slide"  key={index}>
-            <img className="slick-slide-image" src={`${slide.filePath}`} alt='product' />
+          <div className="slick-slide" key={index}>
+            <img className="slick-slide-image"  src={`${slide.filePath}`} alt='product' />
           </div>
 
         )}
