@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { RadioGroup, FormControlLabel, Radio, Typography, styled, Stack } from '@mui/material';
+import { RadioGroup, FormControlLabel,  Typography, styled, Stack } from '@mui/material';
+import { CustomRadio } from '../../../../components/custom/CustomRadio';
 
 
 const StyledFormControlLabel = styled(FormControlLabel)(({ selected }) => ({
@@ -32,7 +33,7 @@ const PaymentOptions = () => {
                 
                 <StyledFormControlLabel
                     value="paypal"
-                    control={<Radio />}
+                    control={<CustomRadio />}
                     label={
                         <>
                             Pay with Paypal
@@ -48,7 +49,7 @@ const PaymentOptions = () => {
 
                 <StyledFormControlLabel
                     value="credit_card"
-                    control={<Radio />}
+                    control={<CustomRadio />}
                     label={
                         <>
                             Credit / Debit Card
@@ -64,7 +65,7 @@ const PaymentOptions = () => {
 
                 <StyledFormControlLabel
                     value="cash_on_delivery"
-                    control={<Radio />}
+                    control={<CustomRadio />}
                     label={
                         <>
                             Cash on Checkout/Delivery

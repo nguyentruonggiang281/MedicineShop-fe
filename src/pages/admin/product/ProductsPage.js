@@ -4,6 +4,7 @@ import { filter } from 'lodash';
 import axios from "axios";
 import { sentenceCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
+import { get } from "../../../api/api.js";
 // @mui
 import {
   Card,
@@ -37,7 +38,7 @@ import { ProductListToolbar, ProductListHead, DeleteDialog } from '../../../sect
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', alignRight: false },
-  { id: 'usedTime', label: 'MFG - EXP', alignRight: false },
+  // { id: 'usedTime', label: 'MFG - EXP', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
   { id: '' }
@@ -98,11 +99,25 @@ export default function ProductsPage() {
   const [idRowProduct, setIdRowProduct] = useState(-1)
   //  lấy id của sản phẩm đã checked
   const [selected, setSelected] = useState([]);
-  // load sản phẩm 
-  const loadProducts = async () => {
-    const result = await axios.get("http://localhost:8080/dashboard/product");
-    setProducts(result.data);
-  };
+ 
+/**
+ * Load products from the backend API
+ *
+ * @returns {Promise} Promise object representing the result of the API call
+ */
+const loadProducts = async () => {
+  try {
+    // Make a GET request to the products API endpoint
+    const data = await get("products");
+
+    // Set the state variable with the result of the API call
+    setProducts(data);
+  } catch (error) {
+    console.error(error);
+    // Handle the error here, e.g. show a user-friendly message
+  }
+};
+
 
   useEffect(() => {
     loadProducts();
@@ -148,7 +163,7 @@ export default function ProductsPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = products.map((n) => n.id);
+      const newSelecteds = products.map((n) => n.product_id);
       setSelected(newSelecteds);
       return;
     }
@@ -226,19 +241,19 @@ export default function ProductsPage() {
                 />
                 <TableBody>
                   {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product, index) => {
-                    const selectedProduct = selected.indexOf(product.id) !== -1;
+                    const selectedProduct = selected.indexOf(product.product_id) !== -1;
                     return (
 
                       <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedProduct}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedProduct} onChange={(event) => handleClick(event, product.id)} />
+                          <Checkbox checked={selectedProduct} onChange={(event) => handleClick(event, product.product_id)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none" >
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar
                               alt={product.name}
-                              src={product.img}
+                              src={product.list_image[0] }
                               variant="rounded"
                               sx={{ width: 55, height: 55 }} />
                             <Link href='/dashboard/products/new' underline="hover" color="inherit" variant="subtitle2" noWrap >
@@ -247,7 +262,7 @@ export default function ProductsPage() {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{product.usedTime}</TableCell>
+                        {/* <TableCell align="left">{product.usedTime}</TableCell> */}
 
                         <TableCell align="left">
                           <Label color={(product.status === 'Out Of Stock' && 'error') || (product.status === 'Expires' && 'error') || (product.status === 'Low Stock' && 'warning') || 'success'}>{sentenceCase(product.status)}</Label>
@@ -256,8 +271,8 @@ export default function ProductsPage() {
                         <TableCell align="left">{product.price}</TableCell>
 
                         <TableCell align="right">
-                          {/* <Button onClick={() => deleteProduct(product.id)}>Delete</Button> */}
-                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, product.id)}>
+                          {/* <Button onClick={() => deleteProduct(product.product_id)}>Delete</Button> */}
+                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, product.product_id)}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>

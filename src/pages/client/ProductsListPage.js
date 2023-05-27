@@ -94,7 +94,7 @@ function ProductsList() {
                 <ShopProductSort />
               </Stack>
             </Stack>
-            <ProductList products={PRODUCTS} limit={PRODUCTS.length -1} sx={{ p: 2 }} />
+            {/* <ProductList products={PRODUCTS} limit={PRODUCTS.length -1} sx={{ p: 2 }} /> */}
             {/* <Grid item xs={2} bgcolor={'chocolate'} height={500} px={1}>
           <CheckboxList/>
 

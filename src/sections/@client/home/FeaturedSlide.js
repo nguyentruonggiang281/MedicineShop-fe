@@ -4,7 +4,7 @@ import React from "react";
 import Slider from "react-slick";
 import PropTypes from 'prop-types';
 // @mui
-import { Button, Typography, Stack } from '@mui/material';
+import { Button, Typography, Stack, useTheme, useMediaQuery } from '@mui/material';
 
 import { ProductCard } from "../products";
 import Iconify from "../../../components/iconify/Iconify";
@@ -40,13 +40,17 @@ FeaturedSlide.propTypes = {
 // ------------------------------------------------------------------------
 
 function FeaturedSlide({ title, products = [], limit }) {
+   
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('lg'));
+    const s = matches ? 5 : 4;
 
     const settings = {
 
         infinite: false,
         speed: 500,
-        slidesToShow: 5,    
-        slidesToScroll: 5,
+        slidesToShow: s,    
+        slidesToScroll: s,
 
         nextArrow: <CustomNextArrow />,
         prevArrow: <CustomPrevArrow />,

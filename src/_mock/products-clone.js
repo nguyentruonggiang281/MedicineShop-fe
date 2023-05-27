@@ -32,10 +32,10 @@ const PRODUCT_NAME = [
 const PRODUCT_COLOR = ['#00AB55', '#000000', '#FFFFFF', '#FFC0CB', '#FF4842', '#1890FF', '#94D82D', '#FFC107'];
 const PRODUCT_COVER = [
     // 'https://nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg',
-    'https://nhathuoclongchau.com.vn/images/product/2022/07/00500213-bcs-safefit-freezer-max-s52-3-cai-gel-mat-lanh-sang-khoai-6230-62c3_large.jpg',
-    'https://nhathuoclongchau.com.vn/images/product/2022/05/00345910-xit-hong-xuyen-tam-lien-hai-thuong-vuong-30ml-5572-6272_large.jpg',
-    'https://nhathuoclongchau.com.vn/images/product/2022/06/00030434-active-lung-400mg-new-nordic-2x15-5527-62af_large.jpg',
-    'https://nhathuoclongchau.com.vn/images/product/2022/06/00028445-dao-cao-rau-gillette-super-thin-can-vang-goi-2-cai-1139-62b4_large.jpg',
+    'https://res.cloudinary.com/drn7nawnc/image/upload/v1681835099/mmeajopn8sum7wud2cr5.webp',
+    'https://res.cloudinary.com/drn7nawnc/image/upload/v1681835075/azjps83m6pkwellhnect.webp',
+    'https://cdn.nhathuoclongchau.com.vn/unsafe/https://cms-prod.s3-sgn09.fptcloud.com/00031150_bot_can_tay_nguyen_chat_datino_3gx15_goi_1483_62ad_large_f0aacc5800.jpg',
+    'https://res.cloudinary.com/drn7nawnc/image/upload/v1681835075/azjps83m6pkwellhnect.webp',
     'https://nhathuoclongchau.com.vn/images/product/2022/06/00017326-sebiaclear-gel-moussant-200ml-svr-7018-62ae_large.JPG',
     'https://nhathuoclongchau.com.vn/images/product/2022/06/00022782-sua-rua-mat-nghe-nano-ngua-mun-neo-cleanser-86g-1735-62ae_large.jpg',
     'https://nhathuoclongchau.com.vn/images/product/2023/02/00022006-sua-rua-mat-bun-bien-giam-mun-rosette-acne-clear-120g-5962-63db_large.jpg',

@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProduct } from '../../redux/products/productList';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import {
@@ -9,21 +12,21 @@ import {
   ListItem,
   Container,
   Typography,
+  Grid,
+  Paper,
+  styled,
+  Skeleton,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 // sections
 import { SearchForm, FeaturedSlide, SimpleSlider, Bestseller, ProductsByTarget, Suggestions, BlogReview, FeaturedCategory, TopSearch } from '../../sections/@client/home';
 // components
 import { GlassCardComponent } from '../../components/glassmorphism-card';
+import SkeletonLoading from '../../components/skeleton/SkeletonLoading';
 // _mock
 import POSTS from '../../_mock/blog';
-import PRODUCTS from '../../_mock/products-clone';
 
-// hình và nội dung của phần hướng dẫn mua thuốc  
-const GUIDE = [
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/banner-html/home/chuptoathuoc.png", title: "CHỤP TOA THUỐC", content: 'đơn giản & nhanh chóng' },
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/banner-html/home/info-ct.png", title: "NHẬP THÔNG TIN LIÊN LẠC", content: 'để được tư vấn đặt hàng' },
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/banner-html/home/duoc-sy.png", title: "NHẬN BÁO GIÁ TỪ DƯỢC SỸ", content: 'kèm theo tư vấn miễn phí' },
-];
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const TopSearchChip = [
   { key: 0, label: 'Tìm kiếm nhiều', href: '#' },
@@ -36,25 +39,69 @@ const TopSearchChip = [
 ];
 
 const dataTitleTarget = [
-  { title: 'MẸ VÀ BÉ', href: '/products', img: 'https://nhathuoclongchau.com.vn/upload/me-be.png' },
-  { title: 'NGƯỜI CAO TUỔI', href: '#', img: 'https://nhathuoclongchau.com.vn/upload/nguoicaotuoi.png' },
-  { title: 'TRẺ EM', href: '#', img: 'https://nhathuoclongchau.com.vn/upload/treem.png' },
+  { title: 'MẸ VÀ BÉ', href: '/products', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950515/asset/auijh-removebg-preview_sbi3bm.png' },
+  { title: 'NGƯỜI CAO TUỔI', href: '#', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950557/asset/happy-senior-couple-elderly-man-woman-smiling-flat-vector-illustration-old-people_511716-121_x0ewex.jpg' },
+  { title: 'TRẺ EM', href: '#', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950592/asset/teacher-holding-little-students-by-their-hands_52683-45012_uxamiz.jpg' },
 ]
 
 const dataTitleHealthCheck = [
-  { title: 'Khả năng trào ngược dạ dày', href: '/products', img: 'https://nhathuoclongchau.com.vn/frontend_v3/images/disease_survey/stomach1.png' },
-  { title: 'Nguy cơ phụ thuộc bình xịt cắt cơn', href: '#', img: 'https://nhathuoclongchau.com.vn/frontend_v3/images/disease_survey/stomach2.png' },
-  { title: 'Sàng lọc nguy cơ mắc bệnh tim mạch', href: '#', img: 'https://nhathuoclongchau.com.vn/frontend_v3/images/disease_survey/stomach3.png' },
+  { title: 'Khả năng trào ngược dạ dày', href: '/products', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950930/asset/Daday_55938691ef_zpzsja.webp' },
+  { title: 'Nguy cơ phụ thuộc bình xịt cắt cơn', href: '#', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950866/asset/Phoi_0ff95eb627_acuj9v.webp' },
+  { title: 'Sàng lọc nguy cơ mắc bệnh tim mạch', href: '#', img: 'https://res.cloudinary.com/drn7nawnc/image/upload/v1684950828/asset/Timmach2_c75a0affc5_rqnc9j.webp' },
 ]
 
-const END = [
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/drug-double.svg", title: "THUỐC CHÍNH HÃNG", content: 'đa dạng và chuyên sâu' },
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/ic-reload-vector.svg", title: "ĐỔI TRẢ TRONG 30 NGÀY", content: 'kể từ ngày mua hàng' },
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/ic-guarantee-vector.svg", title: "CAM KẾT 100%", content: 'chất lượng sản phẩm' },
-  { img: "https://nhathuoclongchau.com.vn/frontend_v3/images/ic-shipping.svg", title: "MIỄN PHÍ VẬN CHUYỂN", content: 'theo chính sách giao hàng' },
-];
+
+const StyledPaper = styled(Paper)(() => ({
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  padding: '10px',
+
+}));
+const StyledDiv = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+
+const imgStyle = {
+  width: "100%",
+  height: "100%",
+  borderRadius: '10px',
+};
+
+const imgStyle2 = {
+  width: "30px",
+  height: "30px",
+  flexItem: '1',
+
+};
 
 export default function Home() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+  const limit = matches ? 10 : 8;
+
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products.productList.allProduct);
+  const loading = useSelector((state) => state.products.productList.loading);
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    dispatch(getAllProduct());
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+    <SkeletonLoading/>
+    )
+  }
+
   return (
     <>
       {/* ------------------------------------------------------------------------------- */}
@@ -62,51 +109,92 @@ export default function Home() {
         <title>Medicine Shop - Hệ thống nhà thuốc đạt chuẩn đặc cầu</title>
       </Helmet>
       {/* ------------------------------------------------------------------------------- */}
+
       <Container >
-      
+
         <Stack spacing={4}>
 
-          {/* slider và thanh search */}
-          {/* ------------------------------------------------------------------------------- */}
-          <Stack direction="column" spacing={{ xs: 11, sm: 18, md: 27, lg: 37, xl: 45 }}>
-            <SimpleSlider />
-            <SearchForm chipData={TopSearchChip} />
-          </Stack>
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={8}>
+              {/* <Box sx={{ borderRadius: '120px', height: '100%' }}> */}
 
-          {/* hướng dẫn mua thuốc */}
-          {/* ------------------------------------------------------------------------------- */}
-          <Stack spacing={2}>
-            <Typography variant='h3' align='center'> Mua Thuốc Dễ Dàng Tại Medicine Shop</Typography>
+              <SimpleSlider />
+              {/* </Box> */}
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Grid container spacing={1} >
+                <Grid item xs={12} md={8} lg={12} sx={{ display: { xs: 'none', md: 'block' } }}>
 
-            <Stack direction="row"
-              divider={<Divider orientation="vertical" flexItem />}>
-              {GUIDE.map((data, index) => {
-                return (
-                  <ListItem key={index}>
-                    <Stack direction="column"
-                      justifyContent="center"
-                      alignItems="center"
-                      width={"100%"}>
-                      <img
-                        src={data.img}
-                        srcSet={data.img}
-                        alt={data.title}
-                        loading="lazy"
-                        width={'64px'}
-                      />
-                      <Typography mt={2} variant='subtitle1'>{data.title}</Typography>
-                      <Typography variant='body1'>{data.content}</Typography>
-                    </Stack>
-                  </ListItem>
-                );
-              })}
-            </Stack>
+                  <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945169/asset/Subbanner_Destop_4ff4873a67_yuo7de.webp' alt="sss" style={imgStyle} />
+                </Grid>
+                <Grid item xs={12} md={4} lg={12}>
 
-            <Box display={"flex"} justifyContent={"center"}>
-              <Button variant="contained" sx={{ width: "300px", borderRadius: '18px' }}>MUA THUỐC NGAY</Button>
-            </Box>
+                  <Stack
+                    direction="row"
+                    // alignItems="stretch"
+                    spacing={1}
+                    justifyContent={"center"}
+                    sx={{ height: '100%' }}
+                  >
+                    <StyledPaper elevation={3} >
+                      <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945202/asset/mua_thuoc_theo_don_44c4a5e961_bwriws.webp' alt="sss" />
+                      <Typography variant='subtitle2'>Cần mua thuốc</Typography>
+                    </StyledPaper>
+                    <StyledPaper elevation={3}>
+                      <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945227/asset/tu_van_cung_duoc_sy_a00aa6cf14_u9rvgg.webp' alt="sss" />
+                      <Typography variant='subtitle2'>Tư vấn với dược sĩ</Typography>
+                    </StyledPaper>
+                    <StyledPaper elevation={3} >
+                      <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945254/asset/tim_nha_thuoc_53a50614c4_khjxzc.webp' alt="sss" />
+                      <Typography variant='subtitle2'>Tìm nhà thuốc gần đây</Typography>
+                    </StyledPaper>
+                  </Stack>
+                </Grid>
+              </Grid>
 
-          </Stack>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Grid container spacing={1}>
+                <Grid item xs={6} md={3} >
+                  <Stack direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <img src=' https://res.cloudinary.com/drn7nawnc/image/upload/v1684945384/asset/doi_tra_trong_30_ngay_473ff3f60b_xhnfea.webp' alt="sss" style={imgStyle2} />
+                    <Typography variant='body2' align='center' ml={1}>Đổi trả trong 30 ngày từ ngày mua</Typography>
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={6} md={3} ><Stack direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <img src=' https://res.cloudinary.com/drn7nawnc/image/upload/v1684945406/asset/mien_phi_van_chuyen_617a0730bd_zklmwq.webp' alt="sss" style={imgStyle2} />
+                  <Typography variant='body2' align='center' ml={1}> Miễn phí vận chuyển theo chính sách</Typography>
+                </Stack>
+                </Grid>
+
+                <Grid item xs={6} md={3} >
+                  <Stack direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945429/asset/cam_ket_thuoc_chinh_hang_52a4c343f0_ak2jyd.webp' alt="sss" style={imgStyle2} />
+                    <Typography variant='body2' align='center' ml={1}>Cam kết 100% thuốc chính hãng</Typography>
+                  </Stack>
+                </Grid>
+                <Grid item xs={6} md={3} >
+                  <Stack direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <img src='https://res.cloudinary.com/drn7nawnc/image/upload/v1684945452/asset/chuyen_thuoc_dieu_tri_ung_thu_aa2fe84f53_md9gif.webp' alt="sss" style={imgStyle2} />
+                    <Typography variant='body2' align='center' ml={1}>Chuyên thuốc điều trị bệnh ung thư</Typography>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
 
           {/* danh mục nổi bật */}
           {/* ------------------------------------------------------------------------------- */}
@@ -114,21 +202,24 @@ export default function Home() {
 
           {/* Sản Phẩm Nổi Bật Hôm Nay */}
           {/* ------------------------------------------------------------------------------- */}
-          <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
+          <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={products} limit={15} />
 
-          {/* Bán Chạy Nhất  */}
-          {/* ------------------------------------------------------------------------------- */}
-          <Bestseller title='Bán Chạy Nhất' product={PRODUCTS} limit={10} />
 
           {/* Sản Phẩm Theo Đối Tượng */}
           {/* ------------------------------------------------------------------------------- */}
           <GlassCardComponent dataTitle={dataTitleTarget} title='BẢO VỆ' content='Sức khoẻ người thân' />
-          <ProductsByTarget title='Sản Phẩm Theo Đối Tượng' product={PRODUCTS} limit={10} />
+          <ProductsByTarget title='Sản Phẩm Theo Đối Tượng' product={products} limit={limit} />
+          
+
+          {/* Bán Chạy Nhất  */}
+          {/* ------------------------------------------------------------------------------- */}
+          {/* <Bestseller title='Bán Chạy Nhất' product={products} limit={10} /> */}
+
 
 
           {/* Gợi Ý Hôm Nay */}
           {/* ------------------------------------------------------------------------------- */}
-          <Suggestions title='Sản Phẩm Theo Đối Tượng' product={PRODUCTS} limit={10} />
+          {/* <Suggestions title='Sản Phẩm Theo Đối Tượng' product={products} limit={10} /> */}
 
           {/* Góc Sức Khỏe */}
           {/* ------------------------------------------------------------------------------- */}
@@ -138,35 +229,9 @@ export default function Home() {
           {/* Tìm Kiếm Hàng Đầu */}
           {/* ------------------------------------------------------------------------------- */}
           <TopSearch title='Tìm Kiếm Hàng Đầu' chipData={TopSearchChip} />
-          {/* end */}  
+          {/* end */}
           {/* ------------------------------------------------------------------------------- */}
-          <Stack
-            direction="row"
-            divider={<Divider orientation="vertical" flexItem />}
-          >
-            {END.map((data, index) => {
-              return (
-                <ListItem key={index}>
-                  <Stack direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <img
-                      src={data.img}
-                      srcSet={data.img}
-                      alt={data.title}
-                      loading="lazy"
-
-                    />
-                    <Stack pl={2}>
-                      <Typography variant='subtitle1'>{data.title}</Typography>
-                      <Typography color="text.secondary" variant='body1'>{data.content}</Typography>
-                    </Stack>
-                  </Stack>
-                </ListItem>
-              );
-            })}
-          </Stack>
+          
 
         </Stack>
       </Container>

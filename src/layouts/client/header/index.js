@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton, OutlinedInput } from '@mui/material';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // components
@@ -11,6 +11,8 @@ import Logo from '../../../components/logoHome';
 //
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
+import Button from 'src/theme/overrides/Button';
+import SearchBar from './SearchBar';
 // ----------------------------------------------------------------------
 
 
@@ -21,7 +23,7 @@ const HEADER_DESKTOP = 70;
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.primary.main }),
   boxShadow: 'none',
-  
+
   [theme.breakpoints.up('lg')]: {
     width: "100%",
     display: 'flex',
@@ -39,6 +41,24 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
+const SearchContainer = styled("div")({
+  display: "flex",
+  borderRadius: 20,
+  overflow: "hidden",
+
+});
+
+const SearchInput = styled(OutlinedInput)({
+  borderRadius: "50px 0 0 50px",
+  flexGrow: 1,
+  padding: "0 15px",
+
+});
+
+const SearchButton = styled(Button)({
+  borderRadius: "0 50px 50px 0",
+  padding: "0 40px",
+});
 // ----------------------------------------------------------------------
 
 Header.propTypes = {
@@ -79,8 +99,12 @@ export default function Header({ onOpenNav }) {
         </IconButton>
 
         <Logo />
-
         <Box sx={{ flexGrow: 1 }} />
+
+        <SearchBar />
+        
+        <Box sx={{ flexGrow: 1 }} />
+
 
         <Stack
           direction="row"
@@ -90,6 +114,8 @@ export default function Header({ onOpenNav }) {
             sm: 4
           }}
         >
+
+
 
           <NotificationsPopover />
 

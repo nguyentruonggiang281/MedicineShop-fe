@@ -118,9 +118,9 @@ function Footer() {
           justifyContent="space-between"
           spacing={2} sx={{ py: 3 }}
         >
-
+          
           {/* Cột đầu tiên logo + COPYRIGHT */}
-          <Grid container
+          <Grid item container
             direction="column"
             justifyContent='space-between'
 

@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import { logoutUser } from '../../../redux/auth/authSlice';
 
+import { localStorageService } from '../../../services/localStorageService';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -16,7 +19,7 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-  },
+  },  
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
@@ -26,16 +29,22 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
-
+  
   const handleClose = () => {
+    console.log("token", localStorageService.get('USER'));
     setOpen(null);
   };
 
+  const Logout = () => {
+    dispatch(logoutUser())
+    setOpen(null);
+  }
   return (
     <>
       <IconButton
@@ -98,7 +107,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }} component={RouterLink} to="/login">
+        <MenuItem onClick={Logout} sx={{ m: 1 }} component={RouterLink} to="/login">
           Logout
         </MenuItem>
       </Popover>

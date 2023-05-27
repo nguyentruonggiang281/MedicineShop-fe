@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Card, Link, Typography, Stack, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 // utils
@@ -19,6 +19,7 @@ const CustomCard = styled(Card)(() => ({
 }));
 
 const StyledProductImg = styled('img')({
+  padding:16,
   top: 0,
   width: '100%',
   height: '100%',
@@ -43,33 +44,18 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product = [], sx }) {
-  const { name, cover, price, status, unit } = product;
+  const { id, name, asset, price, specifications, unit } = product;
 
   return (
     <CustomCard sx={sx} >
-      <Link underline='none' href='#'>
+      <Link underline='none' href={`/product-details/${id}`}>
         <Box sx={{ pt: '100%', position: 'relative' }} >
-          {status && (
-            <Label
-              variant="filled"
-              color={'primary'}
-              sx={{
-                zIndex: 9,
-                top: 16,
-                right: 16,
-                borderRadius: 20,
-                position: 'absolute',
-              }}
-            >
-              {status}
-            </Label>
-          )}
-          <StyledProductImg href={'#'} alt={name} src={cover} />
+          <StyledProductImg alt={name} src={asset} />
         </Box>
-      
-      <Stack spacing={1} sx={{ p: '24px 16px' }} >
+        </Link>
+      <Stack spacing={1} sx={{ p: '16px' }} >
 
-        <Link color="inherit" underline="hover" href='#'>
+        <Link color="inherit" underline="none" href={`/product-details/${id}`}>
           <Typography  color={'text.primary'} variant="subtitle1" style={textStyle}  >
             {name}
           </Typography>
@@ -83,16 +69,16 @@ export default function ShopProductCard({ product = [], sx }) {
             <Typography
               component="span"
               variant="body1"
-              
-                color={'text.secondary'}
-             
+              color={'text.secondary'}
             >
               &nbsp;/&nbsp;{unit}
             </Typography>
-          </Typography>
-        </Stack>
+          </Typography> 
+        </Stack> 
+
+       <Chip size="small" label={specifications} />
       </Stack>
-      </Link>
+     
     </CustomCard>
   );
 }

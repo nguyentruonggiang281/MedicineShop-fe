@@ -9,18 +9,18 @@ import { Box, Card, Grid, Link, Stack, Typography } from '@mui/material';
 // ------------------------------------------------------------------------
 
 const FEATURED_CATEGORY = [
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/sinh-ly-noi-tiet-to.png", title: "Sinh lý - Nội tiết tố", quantity: '120' },
-    { img: "https://nhathuoclongchau.com.vn/images/category/20220624120650-9722.png", title: "Sức khoẻ tim mạch", quantity: '53' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/ho-tro-tieu-hoa.png", title: "Hỗ trợ tiêu hóa", quantity: '87' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/than-kinh-nao.png", title: "Thần kinh não", quantity: '120' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/cai-thien-tang-cuong-chuc-nang.png", title: "Cải thiện tăng cường chức năng", quantity: '58' },
-    { img: "https://nhathuoclongchau.com.vn/images/category/20220624120646-2097.png", title: "Chăm sóc cơ thể", quantity: '66' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/cham-soc-da-mat.png", title: "Chăm sóc da mặt", quantity: '120' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/cham-soc-toc-da-dau.png", title: "Chăm sóc tóc - da đầu ", quantity: '90' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/ho-tro-tinh-duc.png", title: "Hỗ trợ tình dục", quantity: '69' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/cham-soc-rang-mieng.png", title: "Chăm sóc răng miệng", quantity: '120' },
-    { img: "https://nhathuoclongchau.com.vn/upload/images/filtercate/ve-sinh-ca-nhan.png", title: "Vệ sinh cá nhân", quantity: '97' },
-    { img: "https://nhathuoclongchau.com.vn/images/category/20220624120605-4612.png", title: "Dụng cụ y tế", quantity: '75' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946375/asset/than_kinh_nao_level_2_b0cc93af6f_ivz7if.webp", title: "Thần kinh não", quantity: '120' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946415/asset/tpcn_vitamin_khoang_chat_level_2_91b99b5a64_xjfcc1.webp", title: "Vitamin & Khoáng chất", quantity: '53' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946446/asset/suc_khoe_tim_mach_level_2_1fc9d156fd_mdda4f.webp", title: "Sức khoẻ tim mạch", quantity: '53' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946459/asset/tang_suc_de_khang_mien_dich_level_3_0ae00ae1b9_n5qlia.webp", title: "Tăng sức đề kháng, miễn dịch", quantity: '120' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946475/asset/ho_tro_tieu_hoa_level_2_df7385ed6e_ocveox.webp", title: "Hỗ trợ tiêu hóa", quantity: '87' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946486/asset/sinh_li_noi_tiet_to_ec55ecdc29_x1nqta.webp", title: "Sinh lý - Nội tiết tố", quantity: '58' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946570/asset/dinh_duong_level_2_6b1af6b735_jwypu2.webp", title: "Dinh dưỡng", quantity: '97' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946578/asset/ho_tro_dieu_tri_level_2_00d86ca048_gdzrqg.webp", title: "Hỗ trợ điều trị", quantity: '75' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946590/asset/giai_phap_lan_da_level_2_24c57abcd0_l5ppmc.webp", title: "Giải pháp làn da ", quantity: '90' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946609/asset/cham_soc_da_mat_level_2_83d5e5f264_nib8ea.webp", title: "Chăm sóc da mặt", quantity: '120' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946619/asset/ho_tro_lam_dep_level_2_87dfb56752_xwbecn.webp", title: "Hỗ trợ làm đẹp", quantity: '66' },
+    { img: "https://res.cloudinary.com/drn7nawnc/image/upload/v1684946636/asset/ho_tro_tinh_duc_level_2_d48129bdca_n8ilwm.webp", title: "Hỗ trợ tình dục", quantity: '69' },
   ];
   
 const CustomCard = styled(Card)(() => ({
@@ -32,10 +32,10 @@ const CustomCard = styled(Card)(() => ({
     }
   }));
 const StyledProductImg = styled('img')({
-    top: 8,
-    width: '100px',
-    height: '100px',
-    position: 'absolute',
+    // top: 8,
+    width: '28px',
+    height: '28px',
+    // position: 'absolute',
     margin:2
   });
   const textStyle = {
@@ -56,15 +56,15 @@ function FeaturedCategory({title}) {
 
                 {FEATURED_CATEGORY.map((data, index) => {
                     return (
-                        <Grid item xs={2} sm={4} md={2} p={2} key={index} >
+                        <Grid item xs={2} sm={4} md={2} p={1} key={index} >
                             <CustomCard>
                             <Link underline='none' href='/'>
-                                <Box sx={{ pt: '60%', position: 'relative', display: 'flex', justifyContent: 'center' }}>
+                                <Box sx={{ pt: '24px', position: 'relative', display: 'flex', justifyContent: 'center' }}>
 
                                     <StyledProductImg alt={data.title} src={data.img} />
                                 </Box>
 
-                                <Stack p={2}>
+                                <Stack p={'14px 14px 24px 14px'} >
                                     <Typography variant="subtitle1" textAlign={'center'} color={'text.primary'} style={textStyle}  >
                                         {data.title}
                                     </Typography>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 
 import {  FormControlLabel, Grid, Radio, RadioGroup, Typography, styled } from '@mui/material';
+import { CustomRadio } from '../../../../components/custom/CustomRadio';
 
 
 const StyledFormControlLabel = styled(FormControlLabel)(({ theme, selected }) => ({
@@ -31,7 +32,7 @@ function DeliveryOptions() {
                     <StyledFormControlLabel
                         value="standard"
                         control={
-                            <Radio />
+                            <CustomRadio />
                         }
                         label={
                             <>
@@ -49,7 +50,7 @@ function DeliveryOptions() {
                     <StyledFormControlLabel
                         value="fast"
                         control={
-                            <Radio />
+                            <CustomRadio />
                         }
                         label={
                             <>

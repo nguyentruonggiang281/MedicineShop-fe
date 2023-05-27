@@ -4,42 +4,101 @@ import { useNavigate } from 'react-router-dom';
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
+import { useEffect } from 'react';
 import Iconify from '../../../components/iconify';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../../redux/auth/authSlice';
+import { localStorageService } from '../../../services/localStorageService';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [values, setValues] = useState({
+    username: '',
+    password: '',
+  });
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const { username, password } = values;
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
-  return (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+  const [showPassword, setShowPassword] = useState(false);
 
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+  const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const handleClick = async (event) => {
+    event.preventDefault();
+    try {
+       console.log(values)
+    dispatch(loginUser(values))
+    } catch (error) {
+      console.log(error)
+    }
+   
+    
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // const role = localStorageService.get('USER').roles[0]
+      // if(role === "CUSTOMER"){
+        navigate("/home"); 
+      // }else{
+      //   navigate("/manager")
+      // }
+    }
+    // else{
+    //   navigate("/login")
+    // }
+  }, [isLoggedIn, navigate]);
+  
+  // const handleClick = () => {
+    // navigate('/dashboard', { replace: true });
+  // };
+
+  return (
+    <form onSubmit={handleClick}>
+      <Stack spacing={3}>
+
+      <TextField
+            id="username"
+            name="username"
+            type="text"
+            placeholder="hello@gmail.com"
+            value={username}
+            onChange={handleChange}
+          />
+
+          <TextField
+            id="password"
+            name="password"
+            placeholder="password123"
+            value={password}
+            type={showPassword ? 'text' : 'password'}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+
+          />
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
+        {/* <Checkbox name="remember" label="Remember me" /> */}
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
@@ -48,6 +107,6 @@ export default function LoginForm() {
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login
       </LoadingButton>
-    </>
+    </form>
   );
 }

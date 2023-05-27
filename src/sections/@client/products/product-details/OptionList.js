@@ -44,8 +44,8 @@ const StyledTick = styled(Typography)(({ theme }) => ({
 
 
 
-function OptionList({ options }) {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+function OptionList( props) {
+    const [selectedIndex, setSelectedIndex] = useState(props.data?.length - 1);
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
@@ -57,7 +57,7 @@ function OptionList({ options }) {
                 alignItems="center"
                 spacing={2}>
 
-                {options.map((option, index) => (
+                {props.data?.map((option, index) => (
 
                     <StyledListItem
                         key={index}
@@ -66,7 +66,7 @@ function OptionList({ options }) {
                         onClick={(event) => handleListItemClick(event, index)}
                     >
 
-                        <ListItemText primary={option} />
+                        <ListItemText primary={option.name} />
                         {selectedIndex === index && <StyledTick />}
 
                     </StyledListItem>
