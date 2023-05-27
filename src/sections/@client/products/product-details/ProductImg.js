@@ -25,8 +25,8 @@ const styles = {
   },
 };
 const styleLai = {
-  // display: 'flex',
-  // background: '#000'
+  width: '90%',
+  height: '90%',
 }
 
 const SliderWrapper = styled('div')({
@@ -95,7 +95,7 @@ function ProductImg( props ) {
 
   const settingsThumbs = {
     className: "center",
-    slidesToShow: props.data.length > 5 ? 5 : props.data.length,
+    slidesToShow: props.data?.length > 5 ? 5 : props.data?.length,
     slidesToScroll: 1,
     asNavFor: '.slider-for',
     arrows: false,
@@ -136,11 +136,15 @@ function ProductImg( props ) {
         {...settingsMain}
         asNavFor={nav2}
         ref={slider => (setSlider1(slider))}
+         
       >
-        {props.data.map((slide,index) =>
+        {props.data?.map((slide,index) =>
+      
+
           <div className="slick-slide" key={index}>
-            <img className="slick-slide-image"  src={`${slide.filePath}`} alt='product' />
+            <img className="slick-slide-image" style={styles.slickSlideImg} src={`${slide.filePath}`} alt='product' />
           </div>
+        
 
         )}
 
@@ -150,7 +154,7 @@ function ProductImg( props ) {
           <Iconify icon={'ic:sharp-keyboard-arrow-left'} />
         </IconButtonArrow>
         <Typography variant='subtitle2' sx={{ color: 'white', }}>
-          {currentSlide} / {props.data.length}
+          {currentSlide} / {props.data?.length}
         </Typography>
         <IconButtonArrow sx={{p:'5px 3px 5px 6px'}} onClick={handleNextClick}>
           <Iconify icon={'ic:sharp-keyboard-arrow-right'} />
@@ -165,9 +169,9 @@ function ProductImg( props ) {
           asNavFor={nav1}
           ref={slider => (setSlider2(slider))}>
 
-          {props.data.map((slide,index) =>
+          {props.data?.map((slide,index) =>
 
-            <div style={styleLai} className="slick-slide" key={index}>
+            <div className="slick-slide" key={index}>
 
               <img style={styles.slickSlideImg} className="slick-slide-image" src={`${slide.filePath}`} alt='product' loading="lazy"/>
             </div>

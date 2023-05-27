@@ -99,6 +99,7 @@ export default function LoginPage() {
             </Divider>
 
             <LoginForm />
+            
           </StyledContent>
         </Container>
       </StyledRoot>

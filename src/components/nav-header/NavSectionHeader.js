@@ -16,7 +16,7 @@ export default function NavSectionHeader({ data = [], sx, ...other }) {
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1, ...sx }}>
-        {data.map((item) => (
+        {data.map((item, index) => (
           <NavItem key={item.title} item={item} />
         ))}
       </List>
@@ -82,8 +82,9 @@ function NavItem({ item }) {
         >
         <Collapse in={open} timeout="auto" unmountOnExit onMouseLeave={handlePopoverClose}>
           <List component="nav" disablePadding >
-            {children.map((child) => (
+            {children.map((child,index) => (
               <StyledNavItem
+              key={index}
               component={RouterLink}
               to={child.path}
               sx={{

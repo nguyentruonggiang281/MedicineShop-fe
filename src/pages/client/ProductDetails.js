@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {  useParams } from "react-router-dom";
+import {Link as RouterLink ,  useParams } from "react-router-dom";
+
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 // @mui
-import { Breadcrumbs, Container, Divider, Grid, IconButton, Link, Stack, Typography } from '@mui/material';
+import { Alert, Breadcrumbs, Container, Divider, Grid, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 
 // sections
 import { ProductImg, ProductInfoForm, Quantity, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
@@ -14,33 +15,32 @@ import Iconify from '../../components/iconify';
 
 import { StyledSeparator } from '../../components/custom/CustomSpan';
 import { StyledButtonYellow, StyledButtonGreen } from '../../components/custom/CustomButton';
-import { getById } from '../../api/api';
 import SkeletonLoading from '../../components/skeleton/SkeletonLoading';
 import { getProductById } from '../../redux/products/ProductDetail';
-import { getAllProduct } from 'src/redux/products/productList';
 
 
 const options = ['Hột', 'Viên', 'Lọ sóc'];
 
 function ProductDetails() {
-const [loading, setLoading] = useState(true);
+
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
+// const [loading, setLoading] = useState(true);
     
 //   const [product, setProduct] = useState([]);
 
   const { id } = useParams();
-  
-//   const loadProducts = async () => {
-//     try {
-//       // Make a GET request to the products API endpoint
-//       const data = await getById(`products`, id);
-//   console.log(data);
-//       // Set the state variable with the result of the API call
-//       setProduct(data);
-//     } catch (error) {
-//       console.error(error);
-//       // Handle the error here, e.g. show a user-friendly message
-//     }
-//   };
   
   
 //   useEffect(() => {
@@ -53,19 +53,13 @@ const [loading, setLoading] = useState(true);
   
 const dispatch = useDispatch();
 const product = useSelector((state) => state.products.productDetail.product);
-// const loading = useSelector((state) => state.products.productDetail.loading);
+const loading = useSelector((state) => state.products.productDetail.loading);
 // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
 useEffect(() => {
   dispatch(getProductById(id));
 }, [id]);
 console.log("product", product);
-
-
-setTimeout(() => {
-  setLoading(false);
-}, 500);
-
 
 if (loading) {
   return (
@@ -96,53 +90,29 @@ if (loading) {
                                 Category2
                             </Link>
                             {/* {loading ? <SkeletonLoading/> : */}
-                            <Typography color="inherit" >{product.name}</Typography>
+                            <Typography color="inherit" >{product?.slug}</Typography>
                             {/* } */}
                         </Breadcrumbs>
                     </Grid>
 
                     {/* hình ảnh sản phẩm */}
-                    <Grid item xs={12} md={6} lg={7}>
+                    <Grid item xs={12} md={6}   p={'16px 32px'}>
 
-                        <ProductImg data={product.assets}/>
+                        <ProductImg data={product?.assets}/>
 
                     </Grid>
                     {/* thông tin sp */}
-                    <Grid item xs={12} md={6} lg={5} p={'16px 32px 16px 40px'} >
+                    <Grid item xs={12} md={6}  p={'16px 32px 16px 40px'} >
 
                         <Stack spacing={2} >
                             {/* thông tin tên , giá ,... */}
-                            {/* <ProductInfoForm  product={product} /> */}
+                            <ProductInfoForm  product={product} />
 
-                            <Divider sx={{ borderStyle: 'dashed' }} />
-                            {/* option lựa đơn vị bán, số lượng */}
-                            <Stack>
-
-                                {/* đơn vị bán */}
-                                <Grid container alignItems="center" spacing={2} >
-                                    <Grid item xs={6} md={3} >
-                                        <Typography>Đơn vị bán</Typography> </Grid>
-                                    <Grid item xs={6} md={9} >
-                                        <OptionList options={options} />
-                                    </Grid>
-                                </Grid>
-
-                                {/* Số lượng */}
-                                <Stack
-                                    direction="row"
-                                    justifyContent="space-between"
-                                    pt={2}
-                                >
-                                    <Typography> Chọn số lượng </Typography>
-                                    <Stack>
-                                        <Quantity />
-                                        <Typography variant='caption' pt={'2px'} textAlign={'right'}> Có sẵn : 49 </Typography>
-                                    </Stack>
-                                </Stack>
-                            </Stack>
+                            
 
                             <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* Hai button thêm vào giỏ hàng và mua ngay */}
+                            {/* ------------------------------------------------------------------------------------------- */}
                             <Stack
                                 direction="row"
                                 spacing={2}
@@ -150,12 +120,14 @@ if (loading) {
 
                             >
                                 {/* thêm vào giỏ */}
-                                <StyledButtonYellow>
+                                <StyledButtonYellow onClick={handleClick}>
                                     <Iconify icon={'ic:round-add-shopping-cart'} />
                                     &nbsp;&nbsp;Add To Cart
                                 </StyledButtonYellow>
                                 {/* mua ngay */}
-                                <StyledButtonGreen>Buy Now</StyledButtonGreen>
+                                <StyledButtonGreen component={RouterLink} to="/checkout">
+                                    Buy Now
+                                    </StyledButtonGreen>
                             </Stack>
 
                             {/* nút share vô tri */}
@@ -167,6 +139,7 @@ if (loading) {
                             </Stack>
                         </Stack>
                     </Grid>
+
                     {/* cam kết (ko cần quan tâm)*/}
                     <Grid item xs={12} md={12} sx={{ borderTop: '1px dashed lightgrey' }} py={3}>
                         <Typography variant='h5' align='center' textTransform={'uppercase'}>Medicine shop cam kết</Typography>
@@ -225,14 +198,18 @@ if (loading) {
 
                     {/* tabs mô tả sản phẩm và quánh giá nhận xét */}
                     <Grid item xs={12} md={12} pt={3}>
-                        {/* <TabDescriptionAndReview product={product} /> */}
+                        <TabDescriptionAndReview product={product} />
                     </Grid>
 
                     {/* <Grid item xs={12} md={12} pt={3}>
                         <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
                     </Grid> */}
                 </Grid>
-
+                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose}  variant="filled" severity="success">
+          Sản phẩm đã được thêm vào giỏ hàng
+        </Alert>
+      </Snackbar>
 
             </Container>
 

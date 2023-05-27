@@ -3,9 +3,9 @@ import axios from "axios";
 import { BASE_URL } from "../utils/baseURL";
 
 export let authService = {
-  registerSeller: async (values) => {
+  register: async (values) => {
     try {
-        const response = await axios.post(BASE_URL + "/auth/register/s",values);
+        const response = await axios.post(BASE_URL + "/api/v1/auth/register",values);
         message.success("Register Success")
         return response.data
     } catch (error) {
@@ -13,10 +13,10 @@ export let authService = {
         console.log(error)   
     }
   },
-  registerUser: async (values) => {
+  login: async (values) => {
     try {
-        const response = await axios.post(BASE_URL + "/auth/register/u",values);
-        message.success("Register Success")
+        const response = await axios.post(BASE_URL + "/api/v1/auth/login", values);
+        message.success("Login Success")
         return response.data
     } catch (error) {
         message.error("Register Error")

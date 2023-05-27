@@ -47,14 +47,6 @@ export default function Router() {
          { path: 'address', element: <AddressForm/> },
         ],
     },
-    // {
-    //   path: '/product-details',
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { element: <Navigate to="/home" />, index: true },
-    //     { path: 'functional-foods', element: <FunctionalFoodsList/> },
-    //   ],
-    // },
     {
       path: '/login',
       element: <LoginPage />,
