@@ -28,13 +28,10 @@ import OrderSummary from './OrderSummary';
 // components
 import { StyledButtonGreen } from '../../../../components/custom/CustomButton';
 import Scrollbar from '../../../../components/scrollbar/Scrollbar';
-import PRODUCTS from '../../../../_mock/products-clone';
 import CartListHead from './CartListHead';
 import { Quantity } from '../product-details';
 import SvgColor from '../../../../components/svg-color/SvgColor';
-import { localStorageService } from 'src/services/localStorageService';
-import { fetchCartItems } from 'src/redux/cart/cartSlice';
-import SkeletonLoading from 'src/components/skeleton/SkeletonLoading';
+import { fetchCartItems, removeFromCart } from '../../../../redux/cart/cartSlice';
 
 
 
@@ -78,6 +75,19 @@ function Cart({ handleNext, activeStep }) {
   const idAccount = useSelector((state) => state.auth.idAccount);
 
 
+  
+const handleRemoveClick = async (idCartItem) => {
+  try {
+    if (!!idCartItem) {
+      dispatch(removeFromCart(idCartItem));
+      console.log('Product deleted successfullyyyyyyyyyyyyyyyyy');
+    } else {
+      console.log("idCartItem is undefined",idCartItem);
+    }
+  } catch (error) {
+    console.error('Failed to delete product:', error);
+  }
+};
   useEffect(() => {
    
     if (isLoggedIn) {
@@ -181,8 +191,7 @@ function Cart({ handleNext, activeStep }) {
                         onSelectAllClick={handleSelectAllClick}
                       />
                       <TableBody>
-                        {/* fake data nên khi có api bỏ .slice */}
-                        {cart?.slice(0, 8).map((product, index) => {
+                        {cart?.map((product, index) => {
                           const selectedProduct = selected.indexOf(product.cartItemId) !== -1;
                           return (
 
@@ -193,7 +202,6 @@ function Cart({ handleNext, activeStep }) {
                               <TableCell padding="checkbox">
                                 <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId)} />
                               </TableCell>
-
 
                               {/* hình + tên sản phẩm */}
                               <TableCell component="th" scope="row" padding="none" >
@@ -240,8 +248,7 @@ function Cart({ handleNext, activeStep }) {
 
                               {/*button delete product */}
                               <TableCell align="right">
-                                {/* <Button onClick={() => deleteProduct(product.id)}>Delete</Button> */}
-                                <IconButton color="inherit">
+                                <IconButton color="inherit" onClick={() => handleRemoveClick(product.cartItemId)}>
                                   <Iconify icon={'eva:trash-2-outline'} />
                                 </IconButton>
                               </TableCell>

@@ -14,30 +14,32 @@ export const fetchCartItems = createAsyncThunk(
   }
 );
 
-// export const addToCart = createAsyncThunk(
-//   'cart/addToCart',
-//   async ({ userId, productId, quantity }) => {
-//     try {
-//   const response = await cartService.addToCart(userId, productId, quantity);
-//   console.log(response);
-//   return response
-//     } catch (error) {
-//       throw new Error(error);
-//     }
-//   }
-// );
+export const addToCart = createAsyncThunk(
+  'cart/addToCart',
+  async (AddToCartRequest) => {
+    try {
+  const response = await cartService.addToCart(AddToCartRequest);
+  console.log(response);
+  return response
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
 
-// export const removeFromCart = createAsyncThunk(
-//   'cart/removeFromCart',
-//   async ({ userId, productId }) => {
-//     try {
-//       await cartService.deleteToCart(userId, productId);
-//       return productId;
-//     } catch (error) {
-//       throw new Error(error);
-//     }
-//   }
-// );
+
+
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async ( idCartItem ) => {
+    try {
+      await cartService.deleteToCart(idCartItem);
+      return idCartItem;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
 
 // export const updateQuantity = createAsyncThunk(
 //   'cart/updateQuantity',
@@ -79,37 +81,40 @@ const cartSlice = createSlice({
         state.error = payload;
         state.emptyCart = true;
       })
-      // .addCase(addToCart.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(addToCart.fulfilled, (state, { payload }) => {
-      //  state.cart = payload
-      //   // const updatedCartItems = [...state.cart.cartItems, payload.cartItems];
-      //   // console.log(updatedCartItems);
-      //   // state.cart = { ...state.cart, cartItems: updatedCartItems };
-      //   // state.loading = false;
-      // })
-      // .addCase(addToCart.rejected, (state, { error }) => {
-      //   state.loading = false;
-      //   state.error = error.message;
-      // })
-      // .addCase(removeFromCart.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(removeFromCart.fulfilled, (state, { payload }) => {
-      //   const updatedCartItems = state.cart.cartItems.filter(
-      //     (item) => item.product.id !== payload
-      //   );
-      //   console.log(updatedCartItems);
-      //   state.cart = { ...state.cart, cartItems: updatedCartItems };
-      //   state.loading = false;
-      // })
-      // .addCase(removeFromCart.rejected, (state, { error }) => {
-      //   state.loading = false;
-      //   state.error = error.message;
-      // })
+      .addCase(addToCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addToCart.fulfilled, (state, { payload }) => {
+       state.cart = payload
+        // const updatedCartItems = [...state.cart.cartItems, payload.cartItems];
+        // console.log(updatedCartItems);
+        // state.cart = { ...state.cart, cartItems: updatedCartItems };
+        // state.loading = false;
+      })
+      .addCase(addToCart.rejected, (state, { error }) => {
+        state.loading = false;
+        state.error = error.message;
+      })
+      .addCase(removeFromCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeFromCart.fulfilled, (state, { payload }) => {
+        const updatedCartItems = state.cart.cartItems.filter(
+          (item) => item.cartItemId !== payload
+        );
+        console.log(updatedCartItems);
+        state.cart = { ...state.cart, cartItems: updatedCartItems };
+        state.loading = false;
+        state.emptyCart =  !state.cart.cartItems[0];
+
+      })
+      .addCase(removeFromCart.rejected, (state, { error }) => {
+        state.loading = false;
+        state.error = error.message;
+      })
+
       // .addCase(updateQuantity.pending, (state) => {
       //   state.loading = true;
       //   state.error = null;

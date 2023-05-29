@@ -27,30 +27,20 @@ const QuantityButton = styled(IconButton)({
 
 Quantity.propTypes = {
   countNumber: PropTypes.number,
+  handleIncrement: PropTypes.func,
+  handleDecrement: PropTypes.func,
 }
 
-function Quantity ({countNumber})  {
-  const [count, setCount] = useState(countNumber);
-
-  const handleIncrement = () => {
-    
-    setCount(count + 1);
-  };
-
-  const handleDecrement = () => {
-
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
+function Quantity ({countNumber,handleDecrement,handleIncrement})  {
+  // const [count, setCount] = useState(countNumber);
 
   return (
     <QuantityWrapper>
-      <QuantityButton sx={{mr:1}} onClick={handleDecrement} disabled={count === 1}>
+      <QuantityButton sx={{mr:1}} onClick={handleDecrement} disabled={countNumber === 1}>
         <Iconify icon={'iconoir:minus-1'} />
       </QuantityButton>
 
-      <span>{count}</span>
+      <span>{countNumber}</span>
 
       <QuantityButton sx={{ml:1}} onClick={handleIncrement}>
         <Iconify icon={'bi:plus'} />

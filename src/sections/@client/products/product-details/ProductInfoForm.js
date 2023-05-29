@@ -6,49 +6,12 @@ import Quantity from './Quantity';
 import OptionList from './OptionList';
 
 
-const StyledListItem = styled(ListItem)(({ theme, selected }) => ({
-  border: `1px solid ${selected ? theme.palette.primary.main : 'gray'}`,
-  borderRadius: 5,
-  width: '30%',
-  padding: '0 22px 0 15px',
-  backgroundColor: selected ? theme.palette.primary.main : 'transparent',
-  color: selected ? 'text.secondary' : 'inherit',
-  '&:hover': {
-    backgroundColor: selected ? theme.palette.primary.main : '#f5f5f5',
-  },
-  '& .MuiListItemText-primary': {
-    fontWeight: selected ? 'bold' : 'normal',
-
-  },
-}));
-
-const StyledTick = styled(Typography)(({ theme }) => ({
-  display: 'inline-block',
-  width: 0,
-  height: 0,
-  top: 0,
-  right: 0,
-  borderRadius: '0 10% 0 100%',
-  borderBottom: `28px solid transparent`,
-  borderRight: `28px solid ${theme.palette.primary.main}`,
-  position: 'absolute',
-
-  transformOrigin: '100% 0%',
-  "&::before": {
-    content: '""',
-    display: 'block',
-    width: 5,
-    height: 10,
-    borderBottom: `2px solid ${theme.palette.background.default}`,
-    borderRight: `2px solid ${theme.palette.background.default}`,
-    transform: 'rotate(45deg)',
-    transformOrigin: '180% 260%',
-  },
-}));
-
 ProductInfoForm.propTypes = {
   product: PropTypes.object,
-  countNumber: PropTypes.number
+  price: PropTypes.number,
+  unit: PropTypes.string,
+
+
 }
 
 
@@ -57,19 +20,17 @@ ProductInfoForm.propTypes = {
  * @param {object} product - The product for which to display information.
  * @returns {JSX.Element} - The JSX element containing the product information.
  */
-function ProductInfoForm({ product ,countNumber}) {
+function ProductInfoForm({ product ,price,unit}) {
 
   const [selectedIndex, setSelectedIndex] = useState(product?.units.length - 1);
-const[price, setPrice] = useState(product?.price);
-const[unit, setUnit] = useState(product?.unit);
+// const[price, setPrice] = useState(product?.price);
+// const[unit, setUnit] = useState(product?.unit);
 
-    const handleListItemClick = (event, selected,index ,unit) => {
-        setSelectedIndex(selected);
-        setPrice(product?.units[index].specifications * product?.price);
-        setUnit(unit);
-        //
-        // console.log("setSelectedIndex----->",  );
-    };
+const [selectedIdUnit, setSelectedIdUnit] = useState(product?.units[selectedIndex].id);
+
+   
+
+    
   return (
     <Grid container spacing={1}>
 
@@ -94,8 +55,8 @@ const[unit, setUnit] = useState(product?.unit);
       {/* Price */}
       <Grid item xs={12} sx={{ borderTop: '1px dashed lightgrey' }}>
         <Stack direction={'row'} alignItems="center" spacing={1}>
-          <Typography variant="h3">{price}đ</Typography>
-          <Typography pt={1} color={'text.secondary'} variant="h6">/&nbsp;{unit}</Typography>
+          <Typography variant="h3">{!price ? product?.price : price}đ</Typography>
+          <Typography pt={1} color={'text.secondary'} variant="h6">/&nbsp;{!unit ? product?.unit : unit}</Typography>
         </Stack>
       </Grid>
 
@@ -170,70 +131,7 @@ const[unit, setUnit] = useState(product?.unit);
       </Grid>
 
 
-      {/* option lựa đơn vị bán, số lượng */}
-
-
-      {/* đơn vị bán */}
-      <Grid item xs={12} md={3} >
-        <Typography variant='subtitle1'>Đơn vị bán</Typography>
-         </Grid>
-      <Grid item xs={12} md={9} >
-        {/* <OptionList data={product?.units} /> */}
-
-        <List>
-            <Stack direction="row" justifyContent="flex-end"
-                alignItems="center"
-                spacing={2}>
-
-                {product?.units?.map((option) => (
-
-                    <StyledListItem
-                        key={option.rank}
-                        button
-                        selected={selectedIndex === option.rank}
-                        onClick={(event) => handleListItemClick(event, option.rank, product?.units.length - 1 - option.rank, option.name)}
-                    >
-
-                        <ListItemText primary={option.name} />
-                        {selectedIndex === option.rank && <StyledTick />}
-
-                    </StyledListItem>
-
-                ))}</Stack>
-        </List>
-      </Grid>
-
-
-      {/* Số lượng */}
-      <Grid item xs={12}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-        >
-          <Typography variant='subtitle1'> Chọn số lượng </Typography>
-          <Stack>
-
-
-
-
-
-
-            <Quantity countNumber={countNumber} />
-
-
-
-
-
-
-
-
-
-
-
-            <Typography variant='caption' pt={'2px'} textAlign={'right'}> Có sẵn : {product?.quantity} </Typography>
-          </Stack>
-        </Stack>
-      </Grid>
+     
 
     </Grid>
   );

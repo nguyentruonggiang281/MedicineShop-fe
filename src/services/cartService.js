@@ -17,11 +17,13 @@ export let cartService = {
   }
   },
 
-  addToCart: async (idAccount,idProduct,quantity) => {
+  addToCart: async (AddToCartRequest) => {
     try {
-      const response = await axios.post(BASE_URL + `/api/v1/carts/item/${idAccount}/${idProduct}/${quantity}`,{
-        ...getAuthConfig(),
-      })
+      const response = await axios.post(BASE_URL + `/api/v1/carts/add-item`,AddToCartRequest
+      // {
+      //   ...getAuthConfig(),
+      // }
+      );
       // openNotificationIcon('success', 'Success', 'Add Product Success!');
       console.log(response);
       return response.data
@@ -41,11 +43,13 @@ export let cartService = {
       console.log(error);
     }
   },
-  deleteToCart: async (idAccount,idProduct) => {
+  deleteToCart: async (idCartItem) => {
     try {
-      const response = await axios.delete(BASE_URL + `/api/v1/carts/item/${idAccount}/${idProduct}`,{
-        ...getAuthConfig(),
-      })
+      const response = await axios.delete(BASE_URL + `/api/v1/carts/${idCartItem}`,
+      // {
+      //   ...getAuthConfig(),
+      // }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
