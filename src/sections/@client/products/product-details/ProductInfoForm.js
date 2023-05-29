@@ -48,6 +48,7 @@ const StyledTick = styled(Typography)(({ theme }) => ({
 
 ProductInfoForm.propTypes = {
   product: PropTypes.object,
+  countNumber: PropTypes.number
 }
 
 
@@ -56,7 +57,7 @@ ProductInfoForm.propTypes = {
  * @param {object} product - The product for which to display information.
  * @returns {JSX.Element} - The JSX element containing the product information.
  */
-function ProductInfoForm({ product }) {
+function ProductInfoForm({ product ,countNumber}) {
 
   const [selectedIndex, setSelectedIndex] = useState(product?.units.length - 1);
 const[price, setPrice] = useState(product?.price);
@@ -211,7 +212,24 @@ const[unit, setUnit] = useState(product?.unit);
         >
           <Typography variant='subtitle1'> Chọn số lượng </Typography>
           <Stack>
-            <Quantity />
+
+
+
+
+
+
+            <Quantity countNumber={countNumber} />
+
+
+
+
+
+
+
+
+
+
+
             <Typography variant='caption' pt={'2px'} textAlign={'right'}> Có sẵn : {product?.quantity} </Typography>
           </Stack>
         </Stack>

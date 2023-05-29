@@ -8,6 +8,7 @@ import { authService } from '../../services/authService';
 const initialState = {
   accessToken:  !!localStorageService.get('access_token') ? localStorageService.get('access_token') : null,
   isLoggedIn: !!localStorageService.get('USER'),
+  idAccount: !!localStorageService.get('USER') ? localStorageService.get('USER')?.id : null,
   registerSuccess: false,
   isRegisterAccountSuccess: false,
 };
@@ -79,12 +80,14 @@ const authSlice = createSlice({
               ...state,
               accessToken: payload.token,
               isLoggedIn: !!payload.token,  
+              idAccount: payload.accountDTO.id
             };
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         return {
           ...state,
           isLoggedIn: false,
+          idAccount: null
         };
       })
 
@@ -98,6 +101,7 @@ const authSlice = createSlice({
             ...state,
             accessToken: null,
             isLoggedIn: false,
+            idAccount: null,
         };
       })
   },

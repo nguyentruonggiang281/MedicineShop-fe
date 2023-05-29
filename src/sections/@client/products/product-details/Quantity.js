@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Iconify from '../../../../components/iconify/Iconify';
-import { IconButton } from '@mui/material';
+import { Box,IconButton } from '@mui/material';
+import PropTypes from 'prop-types'
 
 const QuantityWrapper = styled(Box)({
   display: 'flex',
@@ -23,14 +24,21 @@ const QuantityButton = styled(IconButton)({
   },
 });
 
-const Quantity = () => {
-  const [count, setCount] = React.useState(1);
+
+Quantity.propTypes = {
+  countNumber: PropTypes.number,
+}
+
+function Quantity ({countNumber})  {
+  const [count, setCount] = useState(countNumber);
 
   const handleIncrement = () => {
+    
     setCount(count + 1);
   };
 
   const handleDecrement = () => {
+
     if (count > 1) {
       setCount(count - 1);
     }

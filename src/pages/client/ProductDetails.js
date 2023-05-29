@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Link as RouterLink ,  useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Breadcrumbs, Container, Divider, Grid, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
 
 // sections
-import { ProductImg, ProductInfoForm, Quantity, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
+import { ProductImg, ProductInfoForm, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
 // import { FeaturedSlide } from '../../sections/@client/home';
 
 // components
@@ -22,58 +22,91 @@ import { getProductById } from '../../redux/products/ProductDetail';
 const options = ['Hột', 'Viên', 'Lọ sóc'];
 
 function ProductDetails() {
-
-    const [open, setOpen] = useState(false);
-
-    const handleClick = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setOpen(false);
-    };
-// const [loading, setLoading] = useState(true);
     
-//   const [product, setProduct] = useState([]);
+    
+        const { id } = useParams();
 
-  const { id } = useParams();
-  
-  
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       await loadProducts();
-//     };
-//     fetchData();
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-  
-const dispatch = useDispatch();
-const product = useSelector((state) => state.products.productDetail.product);
-const loading = useSelector((state) => state.products.productDetail.loading);
-// const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const [aaa,setAaa] = useState(1);
 
-useEffect(() => {
-  dispatch(getProductById(id));
-}, [id]);
-console.log("product", product);
+    const dispatch = useDispatch();
+    const product = useSelector((state) => state.products.productDetail.product);
+    const loading = useSelector((state) => state.products.productDetail.loading);
+    const idAcc = useSelector((state) => state.auth.idAccount);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-if (loading) {
-  return (
-  <SkeletonLoading/>
-  )
-}
+    useEffect(() => {
+        dispatch(getProductById(id));
+        
+    }, [id]);
+    // console.log("product", product);
+
+        const [cartRequest, setCartRequest] = useState({
+        idAccount: idAcc,
+        idProduct: id,
+        idUnit: product?.units[product?.units.length - 1]?.unitId,
+        price: product?.price,
+        quantity: 1
+    });
+
+    const { idAccount, idProduct,idUnit,price,quantity } = cartRequest;
+
+    // const [open, setOpen] = useState(false);
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'bottom',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, open } = state;
+    const handleClick = () => {
+        if(isLoggedIn){
+            // setState({ ...state, open: true });
+            if(product!=null){
+            setCartRequest({
+                ...cartRequest,
+                idUnit: product?.units[product?.units.length - 1]?.unitId,
+                price: product?.price,
+                quantity: 1
+            });}
+        }
+
+        console.log("aaaaaaaaaaaasaaaaaaaaaaa", aaa);
+console.log("cartRequest", cartRequest);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setState({ ...state, open: false });
+    };
+
+
+
+    //   useEffect(() => {
+    //     const fetchData = async () => {
+    //       await loadProducts();
+    //     };
+    //     fetchData();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    //   }, []);
+
+
+
+
+
+    if (loading) {
+        return (
+            <SkeletonLoading />
+        )
+    }
 
     return (
-       
-        <> 
+
+        <>
             <Helmet>
                 <title>Chi tiết sản phẩm</title>
             </Helmet>
- 
+
 
             <Container>
                 <Grid container spacing={0} >
@@ -96,19 +129,19 @@ if (loading) {
                     </Grid>
 
                     {/* hình ảnh sản phẩm */}
-                    <Grid item xs={12} md={6}   p={'16px 32px'}>
+                    <Grid item xs={12} md={6} p={'16px 32px'}>
 
-                        <ProductImg data={product?.assets}/>
+                        <ProductImg data={product?.assets} />
 
                     </Grid>
                     {/* thông tin sp */}
-                    <Grid item xs={12} md={6}  p={'16px 32px 16px 40px'} >
+                    <Grid item xs={12} md={6} p={'16px 32px 16px 40px'} >
 
                         <Stack spacing={2} >
                             {/* thông tin tên , giá ,... */}
-                            <ProductInfoForm  product={product} />
+                            <ProductInfoForm product={product} countNumber={aaa} />
 
-                            
+
 
                             <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* Hai button thêm vào giỏ hàng và mua ngay */}
@@ -116,7 +149,7 @@ if (loading) {
                             <Stack
                                 direction="row"
                                 spacing={2}
-                               
+
 
                             >
                                 {/* thêm vào giỏ */}
@@ -127,7 +160,7 @@ if (loading) {
                                 {/* mua ngay */}
                                 <StyledButtonGreen component={RouterLink} to="/checkout">
                                     Buy Now
-                                    </StyledButtonGreen>
+                                </StyledButtonGreen>
                             </Stack>
 
                             {/* nút share vô tri */}
@@ -205,11 +238,11 @@ if (loading) {
                         <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
                     </Grid> */}
                 </Grid>
-                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose}  variant="filled" severity="success">
-          Sản phẩm đã được thêm vào giỏ hàng
-        </Alert>
-      </Snackbar>
+                <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert onClose={handleClose} variant="filled" severity="success">
+                        Đã thêm sản phẩm vào giỏ hàng
+                    </Alert>
+                </Snackbar>
 
             </Container>
 

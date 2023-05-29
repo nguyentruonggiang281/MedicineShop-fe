@@ -1,8 +1,13 @@
 // @mui
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {Link, Link as RouterLink  } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { Badge } from '@mui/material';
 // component
 import SvgColor from '../../../components/svg-color';
+import { localStorageService } from "../../../services/localStorageService";
+import { fetchCartItems } from "../../../redux/cart/cartSlice";
 
 // ----------------------------------------------------------------------
 
@@ -34,13 +39,29 @@ const StyledRoot = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CartWidget() {
+
+  
+
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cart.cartItems);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+const idAccount = useSelector((state) => state.auth.idAccount);
+
+
+  useEffect(() => {
+   
+    if (isLoggedIn) {
+      dispatch(fetchCartItems(idAccount));
+    } 
+  }, [dispatch, isLoggedIn, idAccount]);
+
   return (
-    <a href='/checkout'>
+    <Link to="/checkout">
     <StyledRoot >
-      <Badge showZero badgeContent={0} color="error" max={10}>
+      <Badge showZero badgeContent={!cart?.length? 0 : cart?.length} color="error" max={10}>
         <SvgColor src={`/assets/icons/navbar/ic_cart.svg`} sx={{ width: 24, height: 24 }} />
       </Badge>
     </StyledRoot>
-    </a>
+     </Link>
   );
 }

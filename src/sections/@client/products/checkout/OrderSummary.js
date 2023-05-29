@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, Divider, Stack, Typography, TextField, B
 import Iconify from '../../../../components/iconify/Iconify'
 
 function OrderSummary({ activeStep }) {
+
+
     return (
         <Card>
             <CardHeader title={
@@ -31,7 +33,7 @@ function OrderSummary({ activeStep }) {
                         <Typography variant='subtitle2'> 200.000đ </Typography>
                     </Stack>
 
-                    <Stack
+                    {/* <Stack
                         direction="row"
                         justifyContent="space-between"
                     >
@@ -39,7 +41,7 @@ function OrderSummary({ activeStep }) {
                             Discount
                         </Typography>
                         <Typography variant='subtitle2'> -30.000đ </Typography>
-                    </Stack>
+                    </Stack> */}
 
                     <Stack
                         direction="row"
@@ -67,11 +69,11 @@ function OrderSummary({ activeStep }) {
                         </Stack>
                     </Stack>
 
-                    {activeStep === 0 && (
+                    {/* {activeStep === 0 && (
                         <Stack >
                             <TextField label="DISCOUNT" variant="outlined" sx={{ mt: 1 }} />
                         </Stack>
-                    )}
+                    )} */}
 
 
                 </Stack>

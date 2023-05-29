@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -30,6 +32,9 @@ import PRODUCTS from '../../../../_mock/products-clone';
 import CartListHead from './CartListHead';
 import { Quantity } from '../product-details';
 import SvgColor from '../../../../components/svg-color/SvgColor';
+import { localStorageService } from 'src/services/localStorageService';
+import { fetchCartItems } from 'src/redux/cart/cartSlice';
+import SkeletonLoading from 'src/components/skeleton/SkeletonLoading';
 
 
 
@@ -50,22 +55,45 @@ Cart.propTypes = {
 
 function Cart({ handleNext, activeStep }) {
 
-  const [ emptyCart,setEmptyCart] = useState(false);
 
   // lấy id của sản phẩm trong bảng 
   // const [idRowProduct, setIdRowProduct] = useState(-1)
+
   //  lấy id của sản phẩm đã checked
   const [selected, setSelected] = useState([]);
+
+
+
+
   // load sản phẩm 
-  const loadProducts = async () => {
-    // const result = await axios.get("http://localhost:8080/dashboard/product");
-    // setProducts(result.data);
-    setEmptyCart(PRODUCTS.length === 0)
-  };
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart.cart.cartItems);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const loading = useSelector((state) => state.cart.loading);
+  const emptyCart = useSelector((state) => state.cart.emptyCart);
+
+  const idAccount = useSelector((state) => state.auth.idAccount);
+
 
   useEffect(() => {
-    loadProducts();
-  }, []);
+   
+    if (isLoggedIn) {
+      dispatch(fetchCartItems(idAccount));
+      // console.log("localStorageService",localStorageService.get("USER")?.id)
+    } 
+  }, [dispatch, isLoggedIn, idAccount]);
+
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  // if (loading) {
+  //   return (
+  //   <SkeletonLoading/>
+  //   )
+  // }
+
 
 
   // const deleteProduct = async (id) => {
@@ -82,11 +110,12 @@ function Cart({ handleNext, activeStep }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = PRODUCTS.map((n) => n.id);
+      const newSelecteds = cart?.map((n) => n.cartItemId);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
+    console.log(selected);
   };
 
   const handleClick = (event, id) => {
@@ -102,6 +131,7 @@ function Cart({ handleNext, activeStep }) {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
+    console.log(selected);
   };
 
 
@@ -117,7 +147,7 @@ function Cart({ handleNext, activeStep }) {
                     Cart
                   </Typography>
                   <Typography variant='body1' color={'text.secondary'} >
-                    ( {PRODUCTS.length} Item)
+                    ( {cart?.length} Item)
                   </Typography>
                 </Stack>
               }
@@ -127,7 +157,7 @@ function Cart({ handleNext, activeStep }) {
               (<div>
 
                   {/* if empty cart */}
-                  <Stack Stack spacing={1} alignItems={'center'} px={2} py={8}>
+                  <Stack spacing={1} alignItems={'center'} px={2} py={8}>
                     <SvgColor color={'gray'} src={`/assets/illustrations/illustration_empty_cart.svg`} sx={{ width: '320px', height: '240px', mb: 2 }} />
                     <Typography variant='h5'>
                       Cart is empty
@@ -143,16 +173,17 @@ function Cart({ handleNext, activeStep }) {
                  {/* if non-empty cart */}
                   <TableContainer>
                     <Table sx={{ minWidth: '720px', width: '100%' }}>
+                  
                       <CartListHead
                         headLabel={TABLE_HEAD}
-                        rowCount={PRODUCTS.length}
+                        rowCount={cart?.length}
                         numSelected={selected.length}
                         onSelectAllClick={handleSelectAllClick}
                       />
                       <TableBody>
                         {/* fake data nên khi có api bỏ .slice */}
-                        {PRODUCTS.slice(0, 8).map((product, index) => {
-                          const selectedProduct = selected.indexOf(product.id) !== -1;
+                        {cart?.slice(0, 8).map((product, index) => {
+                          const selectedProduct = selected.indexOf(product.cartItemId) !== -1;
                           return (
 
                             // 1 row có:
@@ -160,7 +191,7 @@ function Cart({ handleNext, activeStep }) {
 
                               {/* checkbox */}
                               <TableCell padding="checkbox">
-                                <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.id)} />
+                                <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId)} />
                               </TableCell>
 
 
@@ -168,8 +199,8 @@ function Cart({ handleNext, activeStep }) {
                               <TableCell component="th" scope="row" padding="none" >
                                 <Stack direction="row" alignItems="center" spacing={2}>
                                   <Avatar
-                                    alt={product.name}
-                                    src={product.cover}
+                                    alt={product.productName}
+                                    src={product.asset}
                                     variant="rounded"
                                     sx={{ width: 55, height: 55 }} />
 
@@ -186,7 +217,7 @@ function Cart({ handleNext, activeStep }) {
                                       maxHeight: '3.6em', // 3 lines * line-height of 1.2
                                     }}
                                   >
-                                    {product.name}
+                                    {product.productName}
                                   </Typography>
                                 </Stack>
                               </TableCell>
@@ -194,12 +225,12 @@ function Cart({ handleNext, activeStep }) {
 
                               {/* Giá thành */}
                               <TableCell align="left">
-                                {product.price}
+                                {product.totalPrice}
                               </TableCell>
 
                               {/* Số lượng */}
                               <TableCell align="left">
-                                <Quantity />
+                                <Quantity countNumber={product.quantity} />
                               </TableCell>
 
                               {/* đơn vị */}
