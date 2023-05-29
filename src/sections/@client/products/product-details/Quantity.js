@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Iconify from '../../../../components/iconify/Iconify';
-import { IconButton } from '@mui/material';
+import { Box,IconButton } from '@mui/material';
+import PropTypes from 'prop-types'
 
 const QuantityWrapper = styled(Box)({
   display: 'flex',
@@ -23,26 +24,23 @@ const QuantityButton = styled(IconButton)({
   },
 });
 
-const Quantity = () => {
-  const [count, setCount] = React.useState(1);
 
-  const handleIncrement = () => {
-    setCount(count + 1);
-  };
+Quantity.propTypes = {
+  countNumber: PropTypes.number,
+  handleIncrement: PropTypes.func,
+  handleDecrement: PropTypes.func,
+}
 
-  const handleDecrement = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
+function Quantity ({countNumber,handleDecrement,handleIncrement})  {
+  // const [count, setCount] = useState(countNumber);
 
   return (
     <QuantityWrapper>
-      <QuantityButton sx={{mr:1}} onClick={handleDecrement} disabled={count === 1}>
+      <QuantityButton sx={{mr:1}} onClick={handleDecrement} disabled={countNumber === 1}>
         <Iconify icon={'iconoir:minus-1'} />
       </QuantityButton>
 
-      <span>{count}</span>
+      <span>{countNumber}</span>
 
       <QuantityButton sx={{ml:1}} onClick={handleIncrement}>
         <Iconify icon={'bi:plus'} />

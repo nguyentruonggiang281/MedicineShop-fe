@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {Link as RouterLink ,  useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 // @mui
-import { Alert, Breadcrumbs, Container, Divider, Grid, IconButton, Link, Snackbar, Stack, Typography } from '@mui/material';
+import { Alert, Breadcrumbs, Container, Divider, Grid, IconButton, Link, List, Snackbar, Stack, Typography, styled, ListItem, ListItemText } from '@mui/material';
 
 // sections
-import { ProductImg, ProductInfoForm, Quantity, OptionList, TabDescriptionAndReview } from '../../sections/@client/products/product-details';
+import { ProductImg, ProductInfoForm, TabDescriptionAndReview, Quantity } from '../../sections/@client/products/product-details';
 // import { FeaturedSlide } from '../../sections/@client/home';
 
 // components
@@ -17,63 +17,194 @@ import { StyledSeparator } from '../../components/custom/CustomSpan';
 import { StyledButtonYellow, StyledButtonGreen } from '../../components/custom/CustomButton';
 import SkeletonLoading from '../../components/skeleton/SkeletonLoading';
 import { getProductById } from '../../redux/products/ProductDetail';
+import { addToCart } from '../../redux/cart/cartSlice';
 
 
-const options = ['Hột', 'Viên', 'Lọ sóc'];
+const StyledListItem = styled(ListItem)(({ theme, selected }) => ({
+    border: `1px solid ${selected ? theme.palette.primary.main : 'gray'}`,
+    borderRadius: 5,
+    width: '30%',
+    padding: '0 22px 0 15px',
+    backgroundColor: selected ? theme.palette.primary.main : 'transparent',
+    color: selected ? 'text.secondary' : 'inherit',
+    '&:hover': {
+        backgroundColor: selected ? theme.palette.primary.main : '#f5f5f5',
+    },
+    '& .MuiListItemText-primary': {
+        fontWeight: selected ? 'bold' : 'normal',
+
+    },
+}));
+
+const StyledTick = styled(Typography)(({ theme }) => ({
+    display: 'inline-block',
+    width: 0,
+    height: 0,
+    top: 0,
+    right: 0,
+    borderRadius: '0 10% 0 100%',
+    borderBottom: `28px solid transparent`,
+    borderRight: `28px solid ${theme.palette.primary.main}`,
+    position: 'absolute',
+
+    transformOrigin: '100% 0%',
+    "&::before": {
+        content: '""',
+        display: 'block',
+        width: 5,
+        height: 10,
+        borderBottom: `2px solid ${theme.palette.background.default}`,
+        borderRight: `2px solid ${theme.palette.background.default}`,
+        transform: 'rotate(45deg)',
+        transformOrigin: '180% 260%',
+    },
+}));
+
 
 function ProductDetails() {
 
-    const [open, setOpen] = useState(false);
 
-    const handleClick = () => {
-      setOpen(true);
+    const { id } = useParams();
+
+    // const [aaa,setAaa] = useState(1);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const product = useSelector((state) => state.products.productDetail.product);
+    const loading = useSelector((state) => state.products.productDetail.loading);
+    const idAcc = useSelector((state) => state.auth.idAccount);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+    const [selectedIndex, setSelectedIndex] = useState(product?.units?.length - 1);
+    const [unit, setUnit] = useState(product?.unit);
+    const [showAlert, setShowAlert] = useState(false);
+
+    useEffect(() => {
+        dispatch(getProductById(id));
+        console.log("selectedIndex", selectedIndex);
+    },
+        [dispatch, id]);
+    // console.log("product", product);
+
+
+
+    const [cartRequest, setCartRequest] = useState({
+        idAccount: idAcc,
+        idProduct: id,
+        idUnit: null,
+        price: null,
+        quantity: 1
+    });
+
+    const { idAccount, idProduct, idUnit, price, quantity } = cartRequest;
+
+
+
+    const handleListItemClick = (event, selected, index, unit, id) => {
+        setSelectedIndex(selected);
+        setUnit(unit);
+        setShowAlert(false);
+        setCartRequest({
+            ...cartRequest,
+            idUnit: id,
+            price: product?.units[index].specifications * product?.price,
+        })
+
+        // setPrice(product?.units[index].specifications * product?.price);
+        // setUnit(unit);
+        // setSelectedIdUnit(id);
+        // console.log("selectedIdUnit----->",  selectedIdUnit);
+        // console.log("unitId----->",  unitId);
+
+
+        console.log("selectedIndex----->", cartRequest);
     };
-  
+
+
+
+
+    // const [open, setOpen] = useState(false);
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'bottom',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, open } = state;
+
+    const handleClickAdd = async () => {
+        if (isLoggedIn) {
+            if (isNaN(selectedIndex)) {
+                setShowAlert(true);
+            } else {
+
+                await dispatch(addToCart(cartRequest));
+                setState({ ...state, open: true });
+                console.log("cartRequest", cartRequest);
+            }
+        } else {
+                setState({ ...state, open: true });
+        }
+    };
+
+    const handleClickBuyNow = async () => {
+        if (isLoggedIn) {
+            if (isNaN(selectedIndex)) {
+                setShowAlert(true);
+            } else {
+                await dispatch(addToCart(cartRequest));
+                setState({ ...state, open: true });
+                navigate('/checkout');
+                console.log("cartRequest", cartRequest);
+            }
+
+        }else {
+            setState({ ...state, open: true });
+    }
+    };
     const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setOpen(false);
+        if (reason === 'clickaway') {
+            return;
+        }
+        setState({ ...state, open: false });
     };
-// const [loading, setLoading] = useState(true);
-    
-//   const [product, setProduct] = useState([]);
 
-  const { id } = useParams();
-  
-  
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       await loadProducts();
-//     };
-//     fetchData();
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-  
-const dispatch = useDispatch();
-const product = useSelector((state) => state.products.productDetail.product);
-const loading = useSelector((state) => state.products.productDetail.loading);
-// const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-useEffect(() => {
-  dispatch(getProductById(id));
-}, [id]);
-console.log("product", product);
+    const handleIncrement = () => {
+        setCartRequest({
+            ...cartRequest,
+            quantity: quantity + 1
+        })
 
-if (loading) {
-  return (
-  <SkeletonLoading/>
-  )
-}
+        console.log("handleIncrement", quantity);
+    };
+
+    const handleDecrement = () => {
+
+        if (quantity > 1) {
+            setCartRequest({
+                ...cartRequest,
+                quantity: quantity - 1
+            })
+            console.log("handleDecrement", quantity);
+        }
+    };
+
+
+
+
+
+    if (loading) {
+        return (
+            <SkeletonLoading />
+        )
+    }
 
     return (
-       
-        <> 
+
+        <>
             <Helmet>
                 <title>Chi tiết sản phẩm</title>
             </Helmet>
- 
+
 
             <Container>
                 <Grid container spacing={0} >
@@ -96,39 +227,97 @@ if (loading) {
                     </Grid>
 
                     {/* hình ảnh sản phẩm */}
-                    <Grid item xs={12} md={6}   p={'16px 32px'}>
+                    <Grid item xs={12} md={6} p={'16px 32px'}>
 
-                        <ProductImg data={product?.assets}/>
+                        <ProductImg data={product?.assets} />
 
                     </Grid>
                     {/* thông tin sp */}
-                    <Grid item xs={12} md={6}  p={'16px 32px 16px 40px'} >
+                    <Grid item xs={12} md={6} p={'16px 32px 16px 40px'} >
 
                         <Stack spacing={2} >
-                            {/* thông tin tên , giá ,... */}
-                            <ProductInfoForm  product={product} />
 
-                            
+
+                            {/* thông tin tên , giá ,... */}
+                            <ProductInfoForm product={product} price={price} unit={unit} />
+
+                            {/* option lựa đơn vị bán, số lượng */}
+
+
+                            {/* đơn vị bán */}
+                            <Grid container spacing={0}>
+
+                                <Grid item xs={12} md={3} >
+                                    <Typography variant='subtitle1'>Đơn vị bán</Typography>
+                                </Grid>
+
+                                <Grid item xs={12} md={9} >
+                                    {/* <OptionList data={product?.units} /> */}
+
+                                    <List>
+                                        <Stack direction="row" justifyContent="flex-end"
+                                            alignItems="center"
+                                            spacing={2}>
+
+                                            {product?.units?.map((option) => (
+
+                                                <StyledListItem
+                                                    key={option.rank}
+                                                    button
+                                                    selected={selectedIndex === option.rank}
+                                                    onClick={(event) => handleListItemClick(event, option.rank, product?.units.length - 1 - option.rank, option.name, option.unitId)}
+                                                >
+
+                                                    <ListItemText primary={option.name} />
+                                                    {selectedIndex === option.rank && <StyledTick />}
+
+                                                </StyledListItem>
+
+                                            ))}</Stack>
+                                    </List>
+                                </Grid>
+                            </Grid>
+
+
+                            {/* Số lượng */}
+                            <Grid item xs={12}>
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-between"
+                                >
+                                    <Typography variant='subtitle1'> Chọn số lượng </Typography>
+                                    <Stack>
+
+
+
+                                        <Quantity countNumber={quantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} />
+
+
+
+
+                                        <Typography variant='caption' pt={'2px'} textAlign={'right'}> Có sẵn : {product?.quantity} </Typography>
+                                    </Stack>
+                                </Stack>
+                            </Grid>
 
                             <Divider sx={{ borderStyle: 'dashed' }} />
                             {/* Hai button thêm vào giỏ hàng và mua ngay */}
                             {/* ------------------------------------------------------------------------------------------- */}
-                            <Stack
-                                direction="row"
-                                spacing={2}
-                               
-
-                            >
+                            {showAlert && (
+                                <Alert severity="warning" sx={{ border: '1px solid black' }} onClose={() => setShowAlert(false)}>Bạn cần chọn đơn vị bán</Alert>
+                            )}
+                            <Stack direction="row" spacing={2}>
                                 {/* thêm vào giỏ */}
-                                <StyledButtonYellow onClick={handleClick}>
+                                <StyledButtonYellow onClick={handleClickAdd}>
                                     <Iconify icon={'ic:round-add-shopping-cart'} />
                                     &nbsp;&nbsp;Add To Cart
                                 </StyledButtonYellow>
                                 {/* mua ngay */}
-                                <StyledButtonGreen component={RouterLink} to="/checkout">
+                                <StyledButtonGreen onClick={handleClickBuyNow}>
                                     Buy Now
-                                    </StyledButtonGreen>
+                                </StyledButtonGreen>
                             </Stack>
+
 
                             {/* nút share vô tri */}
                             <Stack direction={'row'} justifyContent={'center'} spacing={0}>
@@ -205,11 +394,21 @@ if (loading) {
                         <FeaturedSlide title='Sản Phẩm Nổi Bật Hôm Nay' products={PRODUCTS} limit={15} />
                     </Grid> */}
                 </Grid>
-                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose}  variant="filled" severity="success">
-          Sản phẩm đã được thêm vào giỏ hàng
-        </Alert>
-      </Snackbar>
+
+
+                <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={3000} onClose={handleClose}>
+                    {isLoggedIn ? 
+                    <Alert onClose={handleClose} variant="filled" severity="success">
+                        Đã thêm sản phẩm vào giỏ hàng
+                    </Alert>
+                        :
+
+                        <Alert onClose={handleClose} variant="filled" severity="error">
+                            Please log in to add products to the cart
+                        </Alert>}
+                </Snackbar>
+
+
 
             </Container>
 
