@@ -49,7 +49,7 @@ BillingAndAddress.propTypes = {
       <>
         <Container >
           <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8.5}>
               <Card>
                 <CardContent>
   
@@ -104,7 +104,7 @@ BillingAndAddress.propTypes = {
   
   
             {/* Order Summary */}
-            <Grid item xs={12} md={4} >
+            <Grid item xs={12} md={3.5} >
               <OrderSummary activeStep={activeStep} />
             </Grid>
   

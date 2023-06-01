@@ -55,7 +55,7 @@ const IconButtonArrow = styled(IconButton)({
 // ProductImg.propTypes = {
 //   slidesData: PropTypes.array
 // }
-function ProductImg( props ) {
+export default function ProductImg( props ) {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [slider1, setSlider1] = useState(null);
@@ -183,4 +183,4 @@ function ProductImg( props ) {
   );
 }
 
-export default ProductImg;
+// export default ProductImg;

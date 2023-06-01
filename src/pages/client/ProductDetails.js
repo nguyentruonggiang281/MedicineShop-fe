@@ -77,6 +77,7 @@ function ProductDetails() {
     const [selectedIndex, setSelectedIndex] = useState(product?.units?.length - 1);
     const [unit, setUnit] = useState(product?.unit);
     const [showAlert, setShowAlert] = useState(false);
+    const [showPrice, setShowPrice] = useState(null);
 
     useEffect(() => {
         dispatch(getProductById(id));
@@ -107,16 +108,11 @@ function ProductDetails() {
             ...cartRequest,
             idUnit: id,
             price: product?.units[index].specifications * product?.price,
+            quantity: 1
         })
+        setShowPrice(product?.units[index].specifications * product?.price);
 
-        // setPrice(product?.units[index].specifications * product?.price);
-        // setUnit(unit);
-        // setSelectedIdUnit(id);
-        // console.log("selectedIdUnit----->",  selectedIdUnit);
-        // console.log("unitId----->",  unitId);
-
-
-        console.log("selectedIndex----->", cartRequest);
+        // console.log("selectedIndex----->", cartRequest);
     };
 
 
@@ -135,13 +131,12 @@ function ProductDetails() {
             if (isNaN(selectedIndex)) {
                 setShowAlert(true);
             } else {
-
                 await dispatch(addToCart(cartRequest));
                 setState({ ...state, open: true });
-                console.log("cartRequest", cartRequest);
+                console.log("cartRequestzzzzzzzzzzzzzzzzzz", cartRequest);
             }
         } else {
-                setState({ ...state, open: true });
+            setState({ ...state, open: true });
         }
     };
 
@@ -156,9 +151,9 @@ function ProductDetails() {
                 console.log("cartRequest", cartRequest);
             }
 
-        }else {
+        } else {
             setState({ ...state, open: true });
-    }
+        }
     };
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -169,23 +164,47 @@ function ProductDetails() {
 
 
     const handleIncrement = () => {
-        setCartRequest({
-            ...cartRequest,
-            quantity: quantity + 1
-        })
+        // setCartRequest({
+        //     ...cartRequest,
+        //     quantity: quantity + 1
+        // })
+        
+        if (quantity === 2) {
+            setCartRequest({
+                ...cartRequest,
 
-        console.log("handleIncrement", quantity);
+                price: showPrice * 3,
+                quantity: quantity + 1
+            })
+
+            // setTotalPrice(showPrice * 3);
+        } else {
+            setCartRequest({
+                ...cartRequest,
+                price: showPrice * quantity + showPrice,
+                quantity: quantity + 1
+            })
+            // setTotalPrice();
+        }
+
+        console.log("showPrice ===========>", showPrice);
     };
 
     const handleDecrement = () => {
 
         if (quantity > 1) {
-            setCartRequest({
-                ...cartRequest,
-                quantity: quantity - 1
-            })
-            console.log("handleDecrement", quantity);
-        }
+            // setCartRequest({
+            //     ...cartRequest,
+            //     
+            // });
+
+            console.log("handleDecrement===========>", quantity);
+      
+        setCartRequest({
+            ...cartRequest,
+            price: showPrice * quantity - showPrice,quantity: quantity - 1
+        });  }
+        // setTotalPrice(showPrice * quantity - showPrice);
     };
 
 
@@ -239,7 +258,7 @@ function ProductDetails() {
 
 
                             {/* thông tin tên , giá ,... */}
-                            <ProductInfoForm product={product} price={price} unit={unit} />
+                            <ProductInfoForm product={product} price={showPrice} unit={unit} />
 
                             {/* option lựa đơn vị bán, số lượng */}
 
@@ -397,10 +416,10 @@ function ProductDetails() {
 
 
                 <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={3000} onClose={handleClose}>
-                    {isLoggedIn ? 
-                    <Alert onClose={handleClose} variant="filled" severity="success">
-                        Đã thêm sản phẩm vào giỏ hàng
-                    </Alert>
+                    {isLoggedIn ?
+                        <Alert onClose={handleClose} variant="filled" severity="success">
+                            Đã thêm sản phẩm vào giỏ hàng
+                        </Alert>
                         :
 
                         <Alert onClose={handleClose} variant="filled" severity="error">

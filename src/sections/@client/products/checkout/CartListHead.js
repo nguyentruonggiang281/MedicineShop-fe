@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import {  Checkbox, TableRow, TableCell, TableHead,  } from '@mui/material';
+import {  Checkbox, TableRow, TableCell, TableHead, Typography,  } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,8 @@ export default function CartListHead({
             key={headCell.id}
             align={headCell.alignRight ? 'right' : 'left'}
           >
-            {headCell.label}
+            <Typography variant="subtitle2" noWrap>
+            {headCell.label}</Typography>
           </TableCell>
         ))}
       </TableRow>

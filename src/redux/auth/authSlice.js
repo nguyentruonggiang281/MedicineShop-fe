@@ -9,8 +9,6 @@ const initialState = {
   accessToken:  !!localStorageService.get('access_token') ? localStorageService.get('access_token') : null,
   isLoggedIn: !!localStorageService.get('USER'),
   idAccount: !!localStorageService.get('USER') ? localStorageService.get('USER')?.id : null,
-  registerSuccess: false,
-  isRegisterAccountSuccess: false,
 };
 
 //LOGIN
@@ -34,6 +32,7 @@ export const loginUser = createAsyncThunk('auth/login', async (user) => {
 export const logoutUser = createAsyncThunk('auth/logout', async (user, thunkAPI) => {
  
   try {
+    
     localStorageService.remove('USER')
     localStorageService.remove('access_token')
 

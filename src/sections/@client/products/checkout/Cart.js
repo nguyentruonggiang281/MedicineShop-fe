@@ -2,7 +2,9 @@ import React, { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -20,6 +22,11 @@ import {
   Checkbox,
   Avatar,
   IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 
 import Iconify from '../../../../components/iconify/Iconify';
@@ -31,7 +38,11 @@ import Scrollbar from '../../../../components/scrollbar/Scrollbar';
 import CartListHead from './CartListHead';
 import { Quantity } from '../product-details';
 import SvgColor from '../../../../components/svg-color/SvgColor';
-import { fetchCartItems, removeFromCart } from '../../../../redux/cart/cartSlice';
+import { fetchCartItems, removeFromCart, updateQuantity } from '../../../../redux/cart/cartSlice';
+import { getProductById } from '../../../../redux/products/ProductDetail';
+import { productService } from '../../../../services/productService';
+import { cartService } from '../../../../services/cartService';
+
 
 
 
@@ -39,7 +50,7 @@ import { fetchCartItems, removeFromCart } from '../../../../redux/cart/cartSlice
 const TABLE_HEAD = [
   { id: 'price', label: 'Giá thành', alignRight: false },
   { id: 'quantity', label: 'Số lượng', alignRight: false },
-  { id: 'unit', label: 'Đơn vị', alignRight: true },
+  { id: 'unit', label: 'Đơn vị', alignRight: false },
   { id: '' }
 ];
 
@@ -51,14 +62,30 @@ Cart.propTypes = {
 }
 
 function Cart({ handleNext, activeStep }) {
-
+  // const history = useHistory();
 
   // lấy id của sản phẩm trong bảng 
   // const [idRowProduct, setIdRowProduct] = useState(-1)
 
   //  lấy id của sản phẩm đã checked
   const [selected, setSelected] = useState([]);
+  const [units, setUnits] = useState([]);
 
+  const [isEdited, setIsEdited] = useState(NaN);
+
+  const [totalPrice, setTotalPrice] = useState(NaN);
+  // const handleGoBack = () => {
+  //   props.history.goBack();
+  // };
+  const [defaultPrice, setDefaultPrice] = useState(NaN);
+
+  const [updateCartRequest, setUpdateCartRequest] = useState({
+    idUnit: null,
+    price: null,
+    quantity: 1
+  });
+
+  const { idUnit, price, quantity } = updateCartRequest;
 
 
 
@@ -74,26 +101,158 @@ function Cart({ handleNext, activeStep }) {
 
   const idAccount = useSelector((state) => state.auth.idAccount);
 
+  const [state, setState] = useState({
+    open: false,
+    vertical: 'bottom',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
 
-  
-const handleRemoveClick = async (idCartItem) => {
-  try {
-    if (!!idCartItem) {
-      dispatch(removeFromCart(idCartItem));
-      console.log('Product deleted successfullyyyyyyyyyyyyyyyyy');
-    } else {
-      console.log("idCartItem is undefined",idCartItem);
+  const handleRemoveItem = async (idCartItem) => {
+    try {
+      if (!!idCartItem) {
+        dispatch(removeFromCart(idCartItem));
+        console.log('Product deleted successfullyyyyyyyyyyyyyyyyy');
+      } else {
+        console.log("idCartItem is undefined", idCartItem);
+      }
+    } catch (error) {
+      console.error('Failed to delete product:', error);
     }
-  } catch (error) {
-    console.error('Failed to delete product:', error);
+  };
+
+
+
+  const getProduct = async (idPr) => {
+    setUnits([]);
+    return new Promise((resolve, reject) => {
+      productService.getUnitsByIdProduct(idPr)
+        .then(response => {
+
+          setUnits(response);
+          // setUpdateCartRequest({
+          //   idUnit: idCartItem,
+          //   price: response.price,
+          //   quantity: quantity
+          // })
+          console.log("response", response);
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+
+    });
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleChange = (event, selected, price, nameUnit, idUnit) => {
+    setUpdateCartRequest({
+      ...updateCartRequest,
+      idUnit: idUnit,
+      price: price * quantity
+    })
+    setDefaultPrice(price);
+  };
+
+
+
+
+
+  const handleIncrement = () => {
+    setUpdateCartRequest({
+      ...updateCartRequest,
+      price: defaultPrice * quantity + defaultPrice,
+      quantity: quantity + 1
+    })
+  };
+
+
+  const handleDecrement = () => {
+
+    if (quantity > 1) {
+      setUpdateCartRequest({
+        ...updateCartRequest,
+        price: defaultPrice * quantity - defaultPrice,
+        quantity: quantity - 1
+      })
+    }
+  };
+
+
+
+
+
+
+
+  const handleEditCartItem = (idCartItem, idPr, price, quantity, unitId) => {
+    setIsEdited(idCartItem);
+    setDefaultPrice(price / quantity);
+
+    getProduct(idPr);
+
+    setUpdateCartRequest({
+      idUnit: unitId,
+      price: price,
+      quantity: quantity
+    })
+
+    console.log("updateCartssssssssssRequest", updateCartRequest);
   }
-};
+
+
+
+  const handleSaveUpdate = async () => {
+    if (!isNaN(isEdited)) {
+      try {
+        await dispatch(updateQuantity({idItem: isEdited, idUnit:idUnit, price: price, quantity: quantity}));
+        setState({ ...state, open: true });
+        setIsEdited(NaN);
+        console.log('Cart quantity updated successfully', updateCartRequest);
+        // console.log('Reponnnnnnnnnnnnnnnnnnn', response);
+
+      } catch (error) {
+        console.error('Failed to update cart quantity:', error);
+      }
+    } else {
+      console.log("isEdited is undefined", isEdited);
+    }
+
+
+
+
+
+
+
+    // console.log("update cart susses", updateCartRequest);
+  }
+
+
+
+
+
+
   useEffect(() => {
-   
+
     if (isLoggedIn) {
       dispatch(fetchCartItems(idAccount));
       // console.log("localStorageService",localStorageService.get("USER")?.id)
-    } 
+    }
   }, [dispatch, isLoggedIn, idAccount]);
 
   // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -105,18 +264,13 @@ const handleRemoveClick = async (idCartItem) => {
   // }
 
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setState({ ...state, open: false });
+  };
 
-  // const deleteProduct = async (id) => {
-  //   if (idRowProduct !== -1) {
-  //     await axios.delete(`http://localhost:8080/dashboard/product/${id}`);
-  //     setIdRowProduct(-1);
-  //   }
-  //   else if (selected.length !== 0) {
-  //     await axios.delete(`http://localhost:8080/dashboard/products/${selected}`);
-  //   setSelected([]);
-  //   }
-  //   loadProducts();
-  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -148,23 +302,25 @@ const handleRemoveClick = async (idCartItem) => {
   return (
     <Container >
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8} >
+        <Grid item xs={12} md={8.5} >
           <Card>
             <CardHeader
               title={
-                <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                  <Typography variant='h6'>
-                    Cart
-                  </Typography>
-                  <Typography variant='body1' color={'text.secondary'} >
-                    ( {cart?.length} Item)
-                  </Typography>
-                </Stack>
+                !cart?.length ? <></> :
+                  <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                    <Typography variant='h6'>
+                      Cart
+                    </Typography>
+
+                    <Typography variant='body1' color={'text.secondary'} >
+                      ( {cart?.length} Item)
+                    </Typography>
+                  </Stack>
               }
             />
             <CardContent sx={{ px: 0, pt: 3 }}>
-              {emptyCart ? 
-              (<div>
+              {emptyCart ?
+                (<div>
 
                   {/* if empty cart */}
                   <Stack spacing={1} alignItems={'center'} px={2} py={8}>
@@ -173,98 +329,147 @@ const handleRemoveClick = async (idCartItem) => {
                       Cart is empty
                     </Typography>
                     <Typography color={'text.secondary'} variant='body2' >
-                      Look like you have no items in your shopping cart.
+                      {isLoggedIn ? 'Look like you have no items in your shopping cart.' : 'Please login to see your shopping cart.'}
+
                     </Typography>
                   </Stack>
                 </div>
-              ):(
-                <Scrollbar>
+                ) : (
+                  <Scrollbar>
 
-                 {/* if non-empty cart */}
-                  <TableContainer>
-                    <Table sx={{ minWidth: '720px', width: '100%' }}>
-                  
-                      <CartListHead
-                        headLabel={TABLE_HEAD}
-                        rowCount={cart?.length}
-                        numSelected={selected.length}
-                        onSelectAllClick={handleSelectAllClick}
-                      />
-                      <TableBody>
-                        {cart?.map((product, index) => {
-                          const selectedProduct = selected.indexOf(product.cartItemId) !== -1;
-                          return (
+                    {/* if non-empty cart */}
+                    <TableContainer>
+                      <Table sx={{ minWidth: '720px', width: '100%' }}>
 
-                            // 1 row có:
-                            <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedProduct}>
+                        <CartListHead
+                          headLabel={TABLE_HEAD}
+                          rowCount={cart?.length}
+                          numSelected={selected.length}
+                          onSelectAllClick={handleSelectAllClick}
+                        />
+                        <TableBody>
+                          {cart?.map((product, index) => {
+                            const selectedProduct = selected.indexOf(product.cartItemId) !== -1;
+                            return (
 
-                              {/* checkbox */}
-                              <TableCell padding="checkbox">
-                                <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId)} />
-                              </TableCell>
+                              // 1 row có:
+                              <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedProduct}>
 
-                              {/* hình + tên sản phẩm */}
-                              <TableCell component="th" scope="row" padding="none" >
-                                <Stack direction="row" alignItems="center" spacing={2}>
-                                  <Avatar
-                                    alt={product.productName}
-                                    src={product.asset}
-                                    variant="rounded"
-                                    sx={{ width: 55, height: 55 }} />
+                                {/* checkbox */}
+                                <TableCell padding="checkbox">
+                                  <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId)} />
+                                </TableCell>
 
-                                  <Typography
-                                    variant="subtitle2"
-                                    component="div"
-                                    sx={{
-                                      display: '-webkit-box',
-                                      overflow: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                      WebkitLineClamp: 3,
-                                      WebkitBoxOrient: 'vertical',
-                                      lineHeight: 1.2,
-                                      maxHeight: '3.6em', // 3 lines * line-height of 1.2
-                                    }}
-                                  >
-                                    {product.productName}
-                                  </Typography>
-                                </Stack>
-                              </TableCell>
+                                {/* hình + tên sản phẩm */}
+                                <TableCell component="th" scope="row" padding="none" >
+                                  <Stack direction="row" alignItems="center" spacing={2}>
+                                    <Avatar
+                                      alt={product.productName}
+                                      src={product.asset}
+                                      variant="rounded"
+                                      sx={{ width: 55, height: 55 }} />
 
-
-                              {/* Giá thành */}
-                              <TableCell align="left">
-                                {product.totalPrice}
-                              </TableCell>
-
-                              {/* Số lượng */}
-                              <TableCell align="left">
-                                <Quantity countNumber={product.quantity} />
-                              </TableCell>
-
-                              {/* đơn vị */}
-                              <TableCell sx={{ minWidth: '80px' }} align="center">
-                                {product.unit}
-                              </TableCell>
-
-                              {/*button delete product */}
-                              <TableCell align="right">
-                                <IconButton color="inherit" onClick={() => handleRemoveClick(product.cartItemId)}>
-                                  <Iconify icon={'eva:trash-2-outline'} />
-                                </IconButton>
-                              </TableCell>
-
-                            </TableRow>
-
-                          );
-                        })}
-                        
-                      </TableBody>
+                                    <Typography
+                                      variant="subtitle2"
+                                      component="div"
+                                      sx={{
+                                        display: '-webkit-box',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        WebkitLineClamp: 3,
+                                        WebkitBoxOrient: 'vertical',
+                                        lineHeight: 1.2,
+                                        maxHeight: '3.6em', // 3 lines * line-height of 1.2
+                                      }}
+                                    >
+                                      {product.productName}
+                                    </Typography>
+                                  </Stack>
+                                </TableCell>
 
 
-                    </Table>
-                  </TableContainer>
-                </Scrollbar>
-              )  }
+                                {/* Giá thành */}
+                                <TableCell align="center">
+                                  {isEdited === product.cartItemId ? price : product.totalPrice}
+                                </TableCell>
+
+                                {/* Số lượng */}
+                                <TableCell align="center">
+
+
+
+
+
+
+                                  {isEdited === product.cartItemId ? <Quantity countNumber={quantity} handleDecrement={handleDecrement} handleIncrement={handleIncrement} /> : product.quantity}
+
+                                </TableCell>
+
+                                {/* đơn vị */}
+                                <TableCell sx={{ minWidth: '80px' }} align="center">
+                                  {isEdited === product.cartItemId ?
+
+                                    <FormControl >
+                                      <Select sx={{ minWidth: '80px', height: '32px' }}
+                                        size='small'
+                                        value={units[0]}
+                                        displayEmpty
+                                        inputProps={{ 'aria-label': 'Without label' }}
+                                      >
+                                        {units.map((option) => (
+                                          <MenuItem size='small' key={option.unitId} value={option}
+                                            onClick={(event) => handleChange(event, option.rank, option.priceUnit, option.name, option.unitId)}
+                                            onChange={(event) => handleChange(event, option.rank, option.priceUnit, option.name, option.unitId)}>
+                                            {option.name}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                    : product.unit}
+
+                                </TableCell>
+
+                                {/*button delete product */}
+                                <TableCell align="right">
+                                  {/* 1111111111111111111111111111111111111111111 */}
+                                  <Stack direction={'row'} spacing={0.5}>
+
+                                    {isEdited === product.cartItemId ?
+                                      // button save
+                                      <IconButton color="inherit" size='small' onClick={() => handleSaveUpdate()}>
+                                        <Iconify icon={'humbleicons:save'} sx={{ height: '18px', width: '18px' }} />
+                                      </IconButton>
+
+                                      :
+                                      // button edit
+                                      <IconButton color="inherit" size='small' onClick={() => handleEditCartItem(product.cartItemId, product.productId, product.totalPrice, product.quantity, product.idUnit)}>
+                                        <Iconify icon={'eva:edit-fill'} sx={{ height: '18px', width: '18px' }} />
+                                      </IconButton>
+                                    }
+                                    {/* button delete */}
+                                    <IconButton sx={{ color: 'error.main' }} size='small' onClick={() => handleRemoveItem(product.cartItemId)}>
+                                      <Iconify icon={'eva:trash-2-outline'} sx={{ height: '18px', width: '18px' }} />
+                                    </IconButton>
+
+
+                                  </Stack>
+
+
+
+                                </TableCell>
+
+                              </TableRow>
+
+                            );
+                          })}
+
+                        </TableBody>
+
+
+                      </Table>
+                    </TableContainer>
+                  </Scrollbar>
+                )}
 
             </CardContent>
           </Card>
@@ -278,7 +483,7 @@ const handleRemoveClick = async (idCartItem) => {
 
         </Grid>
 
-        <Grid item xs={12} md={4} >
+        <Grid item xs={12} md={3.5} >
 
 
           {/* Order Summary  */}
@@ -290,6 +495,14 @@ const handleRemoveClick = async (idCartItem) => {
 
         </Grid>
       </Grid>
+
+      <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={3000} onClose={handleClose}>
+
+        <Alert onClose={handleClose} variant="filled" severity="success">
+          Cập nhật giỏ hàng thành công
+        </Alert>
+
+      </Snackbar>
     </Container >);
 };
 export default Cart;

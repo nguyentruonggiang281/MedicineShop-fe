@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -9,6 +10,7 @@ import account from '../../../_mock/account';
 import { logoutUser } from '../../../redux/auth/authSlice';
 
 import { localStorageService } from '../../../services/localStorageService';
+import { reset } from '../../../redux/cart/cartSlice';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -43,8 +45,12 @@ export default function AccountPopover() {
 
   const Logout = () => {
     dispatch(logoutUser())
+    dispatch(reset());
     setOpen(null);
   }
+
+  // const idAccount = useSelector((state) => state.auth.idAccount);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <>
       <IconButton
@@ -108,7 +114,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={Logout} sx={{ m: 1 }} component={RouterLink} to="/login">
-          Logout
+          {isLoggedIn ? 'Logout' : 'Login'}
         </MenuItem>
       </Popover>
     </>

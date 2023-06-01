@@ -32,11 +32,13 @@ export let cartService = {
       console.log(error);
     }
   },
-  updateToCart: async (idAccount,idProduct,quantity) => {
+  updateToCart: async (UpdateCartItemRequest) => {
     try {
-      const response = await axios.put(BASE_URL + `/api/v1/carts/item/${idAccount}/${idProduct}/${quantity}`,{
-        ...getAuthConfig(),
-      })
+      const response = await axios.put(BASE_URL + `/api/v1/carts/update-item`,UpdateCartItemRequest 
+      //, {
+      //   ...getAuthConfig(),
+      // }
+      )
       console.log(response);
       return response.data
     } catch (error) {
@@ -55,15 +57,15 @@ export let cartService = {
       console.log(error);
     }
   },
-  deleteAll: async (idAccount) => {
-    try {
-      const response = await axios.delete(BASE_URL + `/api/v1/api/carts/item/${idAccount}`,{
-        ...getAuthConfig(),
-        'Content-Type': 'multipart/form-data'
-      })
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  // deleteAll: async (idAccount) => {
+  //   try {
+  //     const response = await axios.delete(BASE_URL + `/api/v1/api/carts/item/${idAccount}`,{
+  //       ...getAuthConfig(),
+  //       'Content-Type': 'multipart/form-data'
+  //     })
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // },
 };
