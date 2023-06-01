@@ -1,7 +1,7 @@
 // @mui
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Link, Link as RouterLink  } from "react-router-dom";
+import { Link, Link as RouterLink, useLocation } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { Badge } from '@mui/material';
 // component
@@ -39,29 +39,31 @@ const StyledRoot = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CartWidget() {
+  const location = useLocation();
 
-  
 
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart.cartItems);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-const idAccount = useSelector((state) => state.auth.idAccount);
+  const idAccount = useSelector((state) => state.auth.idAccount);
 
 
   useEffect(() => {
-   
     if (isLoggedIn) {
       dispatch(fetchCartItems(idAccount));
-    } 
-  }, [dispatch, isLoggedIn, idAccount]);
+    }
+  }, [dispatch, isLoggedIn, idAccount, location]);
 
   return (
-    <Link to="/checkout">
-    <StyledRoot >
-      <Badge showZero badgeContent={!cart?.length? 0 : cart?.length} color="error" max={10}>
-        <SvgColor src={`/assets/icons/navbar/ic_cart.svg`} sx={{ width: 24, height: 24 }} />
-      </Badge>
-    </StyledRoot>
-     </Link>
+    location.pathname === '/checkout' ?
+      <></> :
+      <Link to="/checkout">
+        <StyledRoot >
+          <Badge showZero badgeContent={!cart?.length ? 0 : cart?.length} color="error" max={10}>
+            <SvgColor src={`/assets/icons/navbar/ic_cart.svg`} sx={{ width: 24, height: 24 }} />
+          </Badge>
+        </StyledRoot>
+      </Link>
+
   );
 }

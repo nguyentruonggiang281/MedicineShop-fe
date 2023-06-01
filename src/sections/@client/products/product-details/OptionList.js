@@ -44,7 +44,7 @@ const StyledTick = styled(Typography)(({ theme }) => ({
 
 
 
-function OptionList( props) {
+export default function OptionList( props) {
     const [selectedIndex, setSelectedIndex] = useState(props.data?.length - 1);
 
     const handleListItemClick = (event, index) => {
@@ -79,4 +79,4 @@ function OptionList( props) {
 
 
 
-export default OptionList;
+// export default OptionList;
