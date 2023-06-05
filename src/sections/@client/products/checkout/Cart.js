@@ -39,9 +39,12 @@ import CartListHead from './CartListHead';
 import { Quantity } from '../product-details';
 import SvgColor from '../../../../components/svg-color/SvgColor';
 import { fetchCartItems, removeFromCart, updateQuantity } from '../../../../redux/cart/cartSlice';
+
 import { getProductById } from '../../../../redux/products/ProductDetail';
 import { productService } from '../../../../services/productService';
 import { cartService } from '../../../../services/cartService';
+import { map } from 'lodash';
+import { addToOrder } from 'src/redux/order/OrderSlice';
 
 
 
@@ -73,7 +76,7 @@ function Cart({ handleNext, activeStep }) {
 
   const [isEdited, setIsEdited] = useState(NaN);
 
-  const [totalPrice, setTotalPrice] = useState(NaN);
+  const [totalPrice, setTotalPrice] = useState(0);
   // const handleGoBack = () => {
   //   props.history.goBack();
   // };
@@ -100,7 +103,7 @@ function Cart({ handleNext, activeStep }) {
   const emptyCart = useSelector((state) => state.cart.emptyCart);
 
   const idAccount = useSelector((state) => state.auth.idAccount);
-
+  
   const [state, setState] = useState({
     open: false,
     vertical: 'bottom',
@@ -121,8 +124,6 @@ function Cart({ handleNext, activeStep }) {
     }
   };
 
-
-
   const getProduct = async (idPr) => {
     setUnits([]);
     return new Promise((resolve, reject) => {
@@ -130,11 +131,6 @@ function Cart({ handleNext, activeStep }) {
         .then(response => {
 
           setUnits(response);
-          // setUpdateCartRequest({
-          //   idUnit: idCartItem,
-          //   price: response.price,
-          //   quantity: quantity
-          // })
           console.log("response", response);
           resolve();
         })
@@ -145,22 +141,6 @@ function Cart({ handleNext, activeStep }) {
     });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const handleChange = (event, selected, price, nameUnit, idUnit) => {
     setUpdateCartRequest({
       ...updateCartRequest,
@@ -169,9 +149,6 @@ function Cart({ handleNext, activeStep }) {
     })
     setDefaultPrice(price);
   };
-
-
-
 
 
   const handleIncrement = () => {
@@ -195,11 +172,6 @@ function Cart({ handleNext, activeStep }) {
   };
 
 
-
-
-
-
-
   const handleEditCartItem = (idCartItem, idPr, price, quantity, unitId) => {
     setIsEdited(idCartItem);
     setDefaultPrice(price / quantity);
@@ -214,8 +186,6 @@ function Cart({ handleNext, activeStep }) {
 
     console.log("updateCartssssssssssRequest", updateCartRequest);
   }
-
-
 
   const handleSaveUpdate = async () => {
     if (!isNaN(isEdited)) {
@@ -232,19 +202,21 @@ function Cart({ handleNext, activeStep }) {
     } else {
       console.log("isEdited is undefined", isEdited);
     }
-
-
-
-
-
-
-
-    // console.log("update cart susses", updateCartRequest);
   }
 
 
 
 
+
+
+
+
+
+const handleCheckout = () => {
+  handleNext();
+  dispatch(addToOrder({ id:selected, price:totalPrice }));
+  // console.log("checkouttt",selected);
+}
 
 
   useEffect(() => {
@@ -276,26 +248,38 @@ function Cart({ handleNext, activeStep }) {
     if (event.target.checked) {
       const newSelecteds = cart?.map((n) => n.cartItemId);
       setSelected(newSelecteds);
-      return;
-    }
+
+      const newTotalPrice = cart?.filter((item) => newSelecteds.indexOf(item.cartItemId) !== -1)
+      .map((item) => item.totalPrice)
+      .reduce((total, price) => total + price, 0);
+    setTotalPrice(newTotalPrice);
+    return;
+  }
+    setTotalPrice(0);
     setSelected([]);
-    console.log(selected);
   };
 
-  const handleClick = (event, id) => {
+  const handleClick = (event, id,price) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
+    let newTotalPrice = totalPrice;
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
+      newTotalPrice += price;
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
+      newTotalPrice -= price;
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
+      newTotalPrice -= price;
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+      newTotalPrice -= price;
     }
+    setTotalPrice(newTotalPrice);
     setSelected(newSelected);
-    console.log(selected);
+    // console.log("totalPrice",totalPrice);
+    // console.log("ssssssssssssss",selected);
   };
 
 
@@ -357,7 +341,7 @@ function Cart({ handleNext, activeStep }) {
 
                                 {/* checkbox */}
                                 <TableCell padding="checkbox">
-                                  <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId)} />
+                                  <Checkbox size='small' checked={selectedProduct} onChange={(event) => handleClick(event, product.cartItemId,product.totalPrice)} />
                                 </TableCell>
 
                                 {/* hình + tên sản phẩm */}
@@ -487,11 +471,11 @@ function Cart({ handleNext, activeStep }) {
 
 
           {/* Order Summary  */}
-          <OrderSummary activeStep={activeStep} />
+          <OrderSummary activeStep={activeStep} totalPrice={totalPrice} />
 
           {/* --------------------------------------- BUTTON --------------------------------------------------- */}
           {/* if empty cart => button is disabled */}
-          <StyledButtonGreen sx={{ py: 1.3, mt: 3 }} disabled={emptyCart} onClick={handleNext} > Check out </StyledButtonGreen>
+          <StyledButtonGreen sx={{ py: 1.3, mt: 3 }} disabled={emptyCart || selected.length === 0 } onClick={handleCheckout} > Check out </StyledButtonGreen>
 
         </Grid>
       </Grid>

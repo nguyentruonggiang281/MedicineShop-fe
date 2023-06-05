@@ -13,7 +13,10 @@ import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
-import navConfig from './config';
+import { navConfig, navConfigStore } from './config';
+import { useSelector } from 'react-redux';
+import { localStorageService } from '../../../services/localStorageService';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -39,12 +42,24 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const isDesktop = useResponsive('up', 'lg');
 
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [nav, setNav] = useState([]);
+
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
+    if (isLoggedIn) {
+      const role = localStorageService.get('USER')?.role[0];
+      console.log("role", role);
+      if (role === "ADMIN") {
+        setNav(navConfig);
+      } else if (role === "STORE") {
+        setNav(navConfigStore);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, isLoggedIn]);
 
   const renderContent = (
     <Scrollbar
@@ -56,7 +71,7 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
       </Box>
-{/* ảnh đại diện */}
+      {/* ảnh đại diện */}
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
@@ -74,35 +89,12 @@ export default function Nav({ openNav, onCloseNav }) {
           </StyledAccount>
         </Link>
       </Box>
-{/* nav header */}
-      <NavSection data={navConfig} />
-      
+      {/* nav header */}
+      <NavSection data={nav} />
+
       <Box sx={{ flexGrow: 1 }} />
 
-{/* bỏ phần dưới */}
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-          <Box
-            component="img"
-            src="/assets/illustrations/illustration_avatar.png"
-            sx={{ width: 100, position: 'absolute', top: -50 }}
-          />
 
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography gutterBottom variant="h6">
-              Get more?
-            </Typography>
-
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              From only $69
-            </Typography>
-          </Box>
-
-          <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
-            Upgrade to Pro
-          </Button>
-        </Stack>
-      </Box>
     </Scrollbar>
   );
 

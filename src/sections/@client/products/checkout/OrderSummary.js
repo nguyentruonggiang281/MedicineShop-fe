@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import { Card, CardContent, CardHeader, Divider, Stack, Typography, TextField, Button } from '@mui/material'
 import Iconify from '../../../../components/iconify/Iconify'
 
-function OrderSummary({ activeStep }) {
+OrderSummary.propTypes = {
+    activeStep: PropTypes.number,
+    totalPrice: PropTypes.number
+}
+function OrderSummary({ activeStep,totalPrice }) {
 
 
     return (
@@ -30,7 +34,7 @@ function OrderSummary({ activeStep }) {
                         <Typography variant='body2' color="text.secondary" gutterBottom>
                             Sub Total
                         </Typography>
-                        <Typography variant='subtitle2'> 200.000đ </Typography>
+                        <Typography variant='subtitle2'> {totalPrice === 0 ? 0 : totalPrice} đ</Typography>
                     </Stack>
 
                     {/* <Stack
@@ -64,7 +68,7 @@ function OrderSummary({ activeStep }) {
                             Total
                         </Typography>
                         <Stack spacing={0.5}>
-                            <Typography variant='subtitle1' textAlign={'right'} color={'#ff5630'} > 170.000đ</Typography>
+                            <Typography variant='subtitle1' textAlign={'right'} color={'#ff5630'} > {totalPrice === 0 ? 0 : totalPrice}đ</Typography>
                             <Typography variant='caption' textAlign={'right'} fontStyle={'italic'}> (VAT included if applicable)</Typography>
                         </Stack>
                     </Stack>
@@ -82,8 +86,5 @@ function OrderSummary({ activeStep }) {
     )
 }
 
-OrderSummary.propTypes = {
-    activeStep: PropTypes.number,
-}
 
 export default OrderSummary;

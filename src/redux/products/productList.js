@@ -7,7 +7,6 @@ const initialState = {
 };
 export const getAllProduct = createAsyncThunk('product/list', async () => {
      const response = await productService.getAllProduct();
-
   return response;
 });
 

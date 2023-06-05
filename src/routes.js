@@ -16,6 +16,10 @@ import ProductDetails from './pages/client/ProductDetails';
 import ProductsList from './pages/client/ProductsListPage';
 import Checkout from './pages/client/CheckoutPage';
 import AddressForm from './sections/@client/products/checkout/AddressForm';
+import CreateStore from './pages/admin/CreateStore';
+import StorePage from './pages/admin/StorePage';
+import OrderPage from './pages/client/OrderPage';
+import OrderStorePage from './pages/admin/OrderStorePage';
 // import FunctionalFoodsList from './pages/client/FunctionalFoodsList';
 // ----------------------------------------------------------------------
 
@@ -27,8 +31,11 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
+        { path: 'store', element: < StorePage/> },
+        { path: 'store/new', element: <CreateStore/> },
+        { path: 'order', element: <OrderStorePage /> },
         { path: 'products', element: <ProductsPage /> },
+        { path: 'user', element: <UserPage /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'products/new', element: <CreateProduct /> },
         { path: 'products/edit', element: <EditProduct /> }
@@ -42,9 +49,10 @@ export default function Router() {
         { path: 'home', element: <Home /> },
         { path: 'product-details/:id', element: <ProductDetails /> },
          { path: 'blog', element: <BlogPage /> },
-         { path: 'temp', element: <ProductsList /> },
+         { path: 'list-products/:id', element: <ProductsList /> },
          { path: 'checkout', element: <Checkout/> },
          { path: 'address', element: <AddressForm/> },
+         { path: 'order', element: <OrderPage /> },
         ],
     },
     {

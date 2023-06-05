@@ -37,9 +37,9 @@ const PaymentOptions = () => {
                     label={
                         <>
                             Pay with Paypal
-                            <Typography variant="subtitle2" color="text.secondary">
+                            {/* <Typography variant="subtitle2" color="text.secondary">
                                 toddayyyyyyy
-                            </Typography>
+                            </Typography> */}
                         </>
                     }
                     labelPlacement="end"
@@ -53,9 +53,9 @@ const PaymentOptions = () => {
                     label={
                         <>
                             Credit / Debit Card
-                            <Typography variant="subtitle2" color="text.secondary">
+                            {/* <Typography variant="subtitle2" color="text.secondary">
                                 toddayyyyyyy
-                            </Typography>
+                            </Typography> */}
                         </>
                     }
                     labelPlacement="end"
@@ -69,9 +69,9 @@ const PaymentOptions = () => {
                     label={
                         <>
                             Cash on Checkout/Delivery
-                            <Typography variant="subtitle2" color="text.secondary">
+                            {/* <Typography variant="subtitle2" color="text.secondary">
                                 toddayyyyyyy
-                            </Typography>
+                            </Typography> */}
                         </>
                     }
                     labelPlacement="end"

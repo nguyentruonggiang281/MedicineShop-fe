@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Dialog, Button, useMediaQuery, useTheme, Typography, Box, Stack, Link } from '@mui/material';
 import { StyledButtonGreen } from '../../../../components/custom/CustomButton';
 import Iconify from '../../../../components/iconify/Iconify';
@@ -56,11 +57,11 @@ const OrderSuccessDialog = ({ open, handleClose }) => {
                 <Typography>All the best.</Typography>
 
                 <Stack direction={'row'} spacing={2} sx={{ width: '100%', pt: 4,px:1, borderTop: '1px dashed lightgrey' }}>
-                    <Button fullWidth variant="outlined" sx={{ color: '#000', py: '8px' }} onClick={handleClose} href='/home'>
+                    <Button fullWidth variant="outlined" sx={{ color: '#000', py: '8px' }} onClick={handleClose} to="/order" component={RouterLink}>
                         <Iconify icon='ic:outline-keyboard-arrow-left' mr={1} />
                         Continue Shopping
                     </Button>
-                    <StyledButtonGreen onClick={handleClose} >
+                    <StyledButtonGreen onClick={handleClose} to="/order" component={RouterLink}>
                         <Iconify icon='ant-design:file-pdf-filled' mr={1} />
                         Download As PDF
                     </StyledButtonGreen>
