@@ -35,6 +35,8 @@ export let productService = {
     }
   },
 
+  
+
   create: async (values) => {
     try {
       const response = await axios.post(BASE_URL + `/product/`, values, {

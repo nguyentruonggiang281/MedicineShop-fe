@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../../redux/auth/authSlice';
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +30,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -35,6 +39,21 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const Logout = () => {
+    dispatch(logoutUser())
+    setOpen(null);
+  }
+
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+    }
+  }, [isLoggedIn,]);
 
   return (
     <>
@@ -98,7 +117,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }} component={RouterLink} to="/login">
+        <MenuItem onClick={Logout} sx={{ m: 1 }} component={RouterLink} to="/login">
           Logout
         </MenuItem>
       </Popover>

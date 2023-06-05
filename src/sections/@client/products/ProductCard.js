@@ -1,6 +1,8 @@
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // @mui
 import { Box, Card, Link, Typography, Stack, Chip } from '@mui/material';
+
 import { styled } from '@mui/material/styles';
 
 // utils
@@ -48,14 +50,14 @@ export default function ShopProductCard({ product = [], sx }) {
 
   return (
     <CustomCard sx={sx} >
-      <Link underline='none' href={`/product-details/${id}`}>
+      <Link underline='none' component={RouterLink} to={`/product-details/${id}`}>
         <Box sx={{ pt: '100%', position: 'relative' }} >
           <StyledProductImg alt={name} src={asset} />
         </Box>
         </Link>
       <Stack spacing={1} sx={{ p: '16px' }} >
 
-        <Link color="inherit" underline="none" href={`/product-details/${id}`}>
+        <Link color="inherit" underline="none" component={RouterLink} to={`/product-details/${id}`}>
           <Typography  color={'text.primary'} variant="subtitle1" style={textStyle}  >
             {name}
           </Typography>

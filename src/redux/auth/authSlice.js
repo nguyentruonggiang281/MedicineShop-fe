@@ -44,17 +44,6 @@ export const logoutUser = createAsyncThunk('auth/logout', async (user, thunkAPI)
   }
 });
 
-//REGISTER
-// export const registerUser = createAsyncThunk('auth/registerUser', async (infor, thunkAPI) => {
-//   try {
-//     const res = await https.post('/api/auth/signup', infor);
-//     openNotificationIcon('success', 'Success', 'Register Success!');
-//     return res.data;
-//   } catch (error) {
-//     openNotificationIcon('erorr', 'Erorr', 'Register Failed!');
-//     return thunkAPI.rejectWithValue(error.response.data);
-//   }
-// });
 
 
 const authSlice = createSlice({

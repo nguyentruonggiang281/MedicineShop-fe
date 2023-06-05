@@ -38,7 +38,7 @@ function DeliveryOptions() {
                             <>
                                 Standard delivery (Free)
                                 <Typography variant="subtitle2" color="text.secondary">
-                                    toddayyyyyyy
+                                Delivery from 2 to 10 hours
                                 </Typography>
                             </>
                         }
@@ -54,9 +54,9 @@ function DeliveryOptions() {
                         }
                         label={
                             <>
-                                Fast delivery ($2.00)
+                                Fast delivery (20.000 VND)
                                 <Typography variant="subtitle2" color="text.secondary">
-                                    toddayyyyyyy
+                                fast delivery within 1 hour
                                 </Typography>
                             </>
                         }

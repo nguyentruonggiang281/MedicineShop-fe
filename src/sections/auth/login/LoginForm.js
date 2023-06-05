@@ -42,22 +42,18 @@ export default function LoginForm() {
     } catch (error) {
       console.log(error)
     }
-   
-    
   };
 
   useEffect(() => {
     if (isLoggedIn) {
-      // const role = localStorageService.get('USER').roles[0]
-      // if(role === "CUSTOMER"){
+      const role = localStorageService.get('USER')?.role[0];
+      console.log("role", role);
+      if(role === "CUSTOMER"){
         navigate("/home"); 
-      // }else{
-      //   navigate("/manager")
-      // }
+      }else{
+        navigate("/dashboard/app")
+      }
     }
-    // else{
-    //   navigate("/login")
-    // }
   }, [isLoggedIn, navigate]);
   
   // const handleClick = () => {

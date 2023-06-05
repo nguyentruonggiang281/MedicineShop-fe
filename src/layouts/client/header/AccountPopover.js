@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -11,17 +11,18 @@ import { logoutUser } from '../../../redux/auth/authSlice';
 
 import { localStorageService } from '../../../services/localStorageService';
 import { reset } from '../../../redux/cart/cartSlice';
+import { CustomersService } from 'src/services/CustomerService';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
     label: 'Profile',
     icon: 'eva:person-fill',
-  },  
+  },
+  {
+    label: 'My Orders',
+    icon: 'eva:home-fill',
+  },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
@@ -31,15 +32,20 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
+  const [infoCustomer, setInfoCustomer] = useState({
+    name: '',
+    phone: '',
+  })
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
-  
+
   const handleClose = () => {
-    console.log("token", localStorageService.get('USER'));
+    navigate('/order');
     setOpen(null);
   };
 
@@ -51,6 +57,30 @@ export default function AccountPopover() {
 
   // const idAccount = useSelector((state) => state.auth.idAccount);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const idAccount = useSelector((state) => state.auth.idAccount);
+
+  const getInfo = async (idAccount) => {
+    return new Promise((resolve, reject) => {
+      CustomersService.getInfo(idAccount)
+        .then(response => {
+
+          setInfoCustomer({ name: response.name, phone: response.phoneNumber })
+          console.log("response", response);
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+
+    });
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getInfo(idAccount);
+    }
+  }, [isLoggedIn, idAccount]);
+
   return (
     <>
       <IconButton
@@ -94,22 +124,23 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {infoCustomer.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {infoCustomer.phone}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
+        {isLoggedIn &&
+          <Stack sx={{ p: 1 }}>
+            {MENU_OPTIONS.map((option) => (
+              <MenuItem key={option.label} onClick={handleClose}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Stack>
+        }
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
